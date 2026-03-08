@@ -36,6 +36,7 @@ const VisualNovelEngine = () => {
       const [currentSceneId, setCurrentSceneId] = useState('title_screen');
       const [inventory, setInventory] = useState([]);
       const [isTyping, setIsTyping] = useState(true);
+      const [selectedChoiceIdx, setSelectedChoiceIdx] = useState(0);
 
       const bgMusicRef = useRef(null);
       const sfxRef = useRef(null);
@@ -136,6 +137,48 @@ const VisualNovelEngine = () => {
             }
             return true;
       });
+
+      // Keyboard/Arcade Navigation
+      useEffect(() => {
+            const handleKeyDown = (e) => {
+                  if (isTyping && scene.text !== "") {
+                        // Any key skips the typewriter effect
+                        if (['Enter', ' ', 'ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(e.key)) {
+                              e.preventDefault();
+                              setIsTyping(false);
+                        }
+                        return;
+                  }
+
+                  switch (e.key) {
+                        case 'ArrowUp':
+                        case 'ArrowLeft':
+                              e.preventDefault();
+                              setSelectedChoiceIdx(prev => (prev > 0 ? prev - 1 : availableChoices.length - 1));
+                              break;
+                        case 'ArrowDown':
+                        case 'ArrowRight':
+                              e.preventDefault();
+                              setSelectedChoiceIdx(prev => (prev < availableChoices.length - 1 ? prev + 1 : 0));
+                              break;
+                        case 'Enter':
+                        case ' ':
+                              e.preventDefault();
+                              if (availableChoices.length > 0) {
+                                    handleChoice(availableChoices[selectedChoiceIdx]);
+                              }
+                              break;
+                  }
+            };
+
+            window.addEventListener('keydown', handleKeyDown);
+            return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [isTyping, availableChoices, selectedChoiceIdx, scene.text]);
+
+      // Reset selection when scene changes
+      useEffect(() => {
+            setSelectedChoiceIdx(0);
+      }, [currentSceneId]);
 
       const themeClasses = {
             clean: "bg-black/50 backdrop-blur-md border-t-4 border-blue-400 text-blue-50",
@@ -267,7 +310,7 @@ const VisualNovelEngine = () => {
                                                 whileHover={{ scale: 1.01, x: 10, boxShadow: "0px 0px 15px rgba(255,255,255,0.2)" }}
                                                 whileTap={{ scale: 0.98 }}
                                                 onClick={() => handleChoice(choice)}
-                                                className={`text-left px-6 py-5 rounded-lg border-l-4 ${btnClass} font-bold text-xl md:text-2xl transition-colors focus:outline-none flex items-center justify-center gap-3 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.8)]`}
+                                                className={`text-left px-6 py-5 rounded-lg border-l-4 ${btnClass} font-bold text-xl md:text-2xl transition-colors focus:outline-none flex items-center justify-center gap-3 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.8)] ${idx === selectedChoiceIdx ? 'ring-4 ring-white/70 scale-[1.02]' : ''}`}
                                           >
                                                 <span className="w-2 h-2 rounded-full bg-white/50" />
                                                 {choice.label}

@@ -93,11 +93,27 @@
             "uiTheme": "glitch",
             "choices": [
                   {
-                        "label": "Tentar forçar o reinício do painel!",
-                        "nextScene": "dystopia_01"
+                        "label": "⚠️ Tentar forçar o reinício do painel!",
+                        "nextScene": "reveal_bay_01"
                   },
                   {
-                        "label": "Segurar firme e esperar o impacto!",
+                        "label": "⚠️ Segurar firme e esperar o impacto!",
+                        "nextScene": "reveal_bay_01"
+                  }
+            ]
+      },
+      "reveal_bay_01": {
+            "speakerName": "G.E.T. MÓVEL",
+            "text": "Re-sincronizando visão. Baía de Guanabara detectada. Status da cidade do Rio de Janeiro: INSTÁVEL. Condições climáticas: ADVERSAS. Ano de destino: 2050.",
+            "bgImage": "/assets/bg_baia_distopica.jpg",
+            "bgMusic": "/assets/audio/bgm_tension.mp4",
+            "soundEffect": "sfx_doors_opening",
+            "npcSprite": "",
+            "eventCG": "",
+            "uiTheme": "distopic",
+            "choices": [
+                  {
+                        "label": "⚠️ Tentar abrir as comportas manuais.",
                         "nextScene": "dystopia_01"
                   }
             ]

@@ -266,6 +266,41 @@ const LightningFlash = () => (
 );
 
 /* ============================================
+   FLOATING PARTICLES (Dust, Embers, Spores)
+   ============================================ */
+const FloatingParticles = ({ theme }) => {
+      const particles = Array.from({ length: 25 }, (_, i) => {
+            const isEmber = theme === 'glitch' || theme === 'distopic';
+            return {
+                  id: i,
+                  x: Math.random() * 100,
+                  y: Math.random() * 100,
+                  size: 2 + Math.random() * 4,
+                  dur: 6 + Math.random() * 8,
+                  delay: Math.random() * 5,
+                  color: isEmber
+                        ? `rgba(${200 + Math.random() * 55}, ${Math.random() * 80}, ${Math.random() * 30}, ${0.4 + Math.random() * 0.4})`
+                        : theme === 'cyber'
+                              ? `rgba(${180 + Math.random() * 75}, ${100 + Math.random() * 100}, 255, ${0.3 + Math.random() * 0.3})`
+                              : `rgba(255, 255, ${200 + Math.random() * 55}, ${0.2 + Math.random() * 0.3})`
+            };
+      });
+      return (
+            <div className="absolute inset-0 pointer-events-none z-[3] overflow-hidden">
+                  {particles.map(p => (
+                        <motion.div
+                              key={p.id}
+                              className="absolute rounded-full"
+                              style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, backgroundColor: p.color, filter: 'blur(0.5px)' }}
+                              animate={{ y: [-20, -60], x: [0, (Math.random() - 0.5) * 40], opacity: [0, 0.8, 0] }}
+                              transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
+                        />
+                  ))}
+            </div>
+      );
+};
+
+/* ============================================
    TYPEWRITER TEXT COMPONENT
    ============================================ */
 const TypewriterText = ({ text, onComplete }) => {
@@ -483,9 +518,18 @@ const VisualNovelEngine = () => {
             transition: { duration: 0.4, repeat: Infinity, repeatType: "mirror" }
       } : {};
 
-      // Weather effects based on theme
+      // Weather & particle effects based on theme
       const showRain = scene.uiTheme === 'distopic' || scene.uiTheme === 'cyber';
       const showLightning = scene.uiTheme === 'glitch';
+
+      // Color vibrancy filter per theme
+      const colorFilter = scene.uiTheme === 'glitch'
+            ? 'saturate(1.3) contrast(1.15) brightness(1.05)'
+            : scene.uiTheme === 'distopic'
+                  ? 'saturate(1.4) contrast(1.1) brightness(1.02)'
+                  : scene.uiTheme === 'cyber'
+                        ? 'saturate(1.35) contrast(1.1) brightness(1.05)'
+                        : 'saturate(1.2) contrast(1.05) brightness(1.03)';
 
       return (
             <div className="w-full h-screen bg-black flex items-center justify-center overflow-hidden">
@@ -498,11 +542,16 @@ const VisualNovelEngine = () => {
                         <AnimatePresence mode="wait">
                               <motion.div
                                     key={scene.eventCG || scene.bgImage}
-                                    initial={{ opacity: 0, scale: 1.05 }}
-                                    animate={{ opacity: 1, scale: 1 }}
+                                    initial={{ opacity: 0, scale: 1.08 }}
+                                    animate={{ opacity: 1, scale: 1, x: [0, -8, 0], y: [0, -5, 0] }}
                                     exit={{ opacity: 0 }}
-                                    transition={{ duration: 1.2, ease: "easeOut" }}
-                                    className="absolute inset-0"
+                                    transition={{
+                                          opacity: { duration: 1.2, ease: 'easeOut' },
+                                          scale: { duration: 1.2, ease: 'easeOut' },
+                                          x: { duration: 20, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' },
+                                          y: { duration: 15, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }
+                                    }}
+                                    className="absolute inset-[-20px]"
                                     style={{ willChange: 'opacity, transform' }}
                               >
                                     <img
@@ -513,7 +562,9 @@ const VisualNovelEngine = () => {
                                                 objectFit: 'cover',
                                                 objectPosition: 'center center',
                                                 transform: 'translateZ(0)',
-                                                backfaceVisibility: 'hidden'
+                                                backfaceVisibility: 'hidden',
+                                                filter: colorFilter,
+                                                imageRendering: 'auto'
                                           }}
                                     />
                               </motion.div>
@@ -522,6 +573,7 @@ const VisualNovelEngine = () => {
                         {/* Weather Effects */}
                         {showRain && <RainEffect />}
                         {showLightning && <LightningFlash />}
+                        <FloatingParticles theme={scene.uiTheme || 'clean'} />
 
                         {/* Atmospheric Tint */}
                         {!scene.eventCG && (
@@ -540,9 +592,12 @@ const VisualNovelEngine = () => {
                                     <motion.div
                                           key={scene.npcSprite}
                                           initial={{ opacity: 0, y: 50 }}
-                                          animate={{ opacity: 1, y: 0 }}
+                                          animate={{ opacity: 1, y: [0, -3, 0] }}
                                           exit={{ opacity: 0, y: 30 }}
-                                          transition={{ duration: 0.6, ease: "backOut" }}
+                                          transition={{
+                                                opacity: { duration: 0.6, ease: 'backOut' },
+                                                y: { duration: 4, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut', delay: 0.6 }
+                                          }}
                                           className="absolute bottom-6 left-1/2 transform -translate-x-1/2 md:translate-x-0 md:left-[10%] max-w-sm pointer-events-none z-0"
                                     >
                                           <img src={scene.npcSprite} alt={scene.speakerName}

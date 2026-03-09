@@ -554,8 +554,8 @@ const VisualNovelEngine = () => {
                                           alt=""
                                           className="w-full h-full"
                                           style={{
-                                                objectFit: 'cover',
-                                                objectPosition: 'center top',
+                                                objectFit: 'contain',
+                                                objectPosition: 'center center',
                                                 transform: 'translateZ(0)',
                                                 backfaceVisibility: 'hidden',
                                                 filter: colorFilter

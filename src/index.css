@@ -2,13 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+}
+
 body {
       margin: 0;
       padding: 0;
       background-color: #000;
       color: #fff;
       overflow: hidden;
-      /* Mantém a VN imersiva e sem pulos de barra */
+      /* GPU-accelerated rendering for maximum visual quality */
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+}
+
+/* Hide scrollbars everywhere for full immersion */
+::-webkit-scrollbar {
+      display: none;
+}
+
+* {
+      scrollbar-width: none;
+}
+
+/* Smooth image scaling for 4K assets */
+img {
+      image-rendering: auto;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
 }
 
 /* Utilitário global para a sombra do texto das diálogos ganharem contraste */

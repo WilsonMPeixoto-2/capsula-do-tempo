@@ -44,6 +44,20 @@ const VisualNovelEngine = () => {
 
       const scene = storyData[currentSceneId];
 
+      // Preload all images on mount for instant transitions
+      useEffect(() => {
+            const images = new Set();
+            Object.values(storyData).forEach(s => {
+                  if (s.bgImage) images.add(s.bgImage);
+                  if (s.npcSprite) images.add(s.npcSprite);
+                  if (s.eventCG) images.add(s.eventCG);
+            });
+            images.forEach(src => {
+                  const img = new Image();
+                  img.src = src;
+            });
+      }, []);
+
       useEffect(() => {
             if (!scene) return;
 
@@ -234,7 +248,13 @@ const VisualNovelEngine = () => {
                                     exit={{ opacity: 0 }}
                                     transition={{ duration: 1.2, ease: "easeOut" }}
                                     className="absolute inset-0 bg-cover bg-center"
-                                    style={{ backgroundImage: `url(${scene.eventCG || scene.bgImage})` }}
+                                    style={{
+                                          backgroundImage: `url(${scene.eventCG || scene.bgImage})`,
+                                          willChange: 'opacity, transform',
+                                          transform: 'translateZ(0)',
+                                          imageRendering: 'auto',
+                                          backfaceVisibility: 'hidden'
+                                    }}
                               />
                         </AnimatePresence>
 
@@ -260,7 +280,12 @@ const VisualNovelEngine = () => {
                                           transition={{ duration: 0.6, ease: "backOut" }}
                                           className="absolute bottom-6 left-1/2 transform -translate-x-1/2 md:translate-x-0 md:left-[10%] max-w-sm pointer-events-none z-0"
                                     >
-                                          <img src={scene.npcSprite} alt={scene.speakerName} className="h-[75vh] object-contain drop-shadow-[0_0_25px_rgba(0,0,0,0.9)]" />
+                                          <img
+                                                src={scene.npcSprite}
+                                                alt={scene.speakerName}
+                                                className="h-[75vh] object-contain drop-shadow-[0_0_25px_rgba(0,0,0,0.9)]"
+                                                style={{ willChange: 'opacity, transform', transform: 'translateZ(0)', imageRendering: 'auto' }}
+                                          />
                                     </motion.div>
                               )}
                         </AnimatePresence>

@@ -207,17 +207,21 @@ const VisualNovelEngine = () => {
       }, [currentSceneId]);
 
       const themeClasses = {
-            clean: "bg-black/50 backdrop-blur-md border-t-4 border-blue-400 text-blue-50",
-            glitch: "bg-red-950/80 backdrop-blur-md border-t-4 border-red-600 text-red-100",
-            distopic: "bg-zinc-950/90 backdrop-blur-md border-t-4 border-emerald-500 text-emerald-50",
-            cyber: "bg-purple-950/80 backdrop-blur-md border-t-4 border-fuchsia-500 text-purple-100"
+            clean: "glass-panel border-t-2 border-blue-400/50 text-blue-50",
+            glitch: "glass-panel border-t-2 border-red-500/60 text-red-100",
+            distopic: "glass-panel border-t-2 border-emerald-400/50 text-emerald-50",
+            cyber: "glass-panel border-t-2 border-fuchsia-400/50 text-purple-100"
       };
 
       const uiBoxClass = themeClasses[scene.uiTheme] || themeClasses.clean;
-      const btnClass = scene.uiTheme === 'glitch' ? 'bg-red-700/80 hover:bg-red-600 border-red-400'
-            : scene.uiTheme === 'distopic' ? 'bg-emerald-900/60 hover:bg-emerald-800 border-emerald-500'
-                  : scene.uiTheme === 'cyber' ? 'bg-purple-900/60 hover:bg-purple-800 border-fuchsia-400'
-                        : 'bg-blue-900/40 hover:bg-blue-800/60 border-blue-300';
+      const btnGlow = scene.uiTheme === 'glitch' ? 'glow-red'
+            : scene.uiTheme === 'distopic' ? 'glow-emerald'
+                  : scene.uiTheme === 'cyber' ? 'glow-purple'
+                        : 'glow-blue';
+      const gradientText = scene.uiTheme === 'glitch' ? 'gradient-text-red'
+            : scene.uiTheme === 'distopic' ? 'gradient-text-emerald'
+                  : scene.uiTheme === 'cyber' ? 'gradient-text-purple'
+                        : 'gradient-text-blue';
 
       // Identificação do Trait Selecionado
       const hasTactical = inventory.includes("trait_hacker");
@@ -235,7 +239,8 @@ const VisualNovelEngine = () => {
       return (
             <div className="w-full h-screen bg-black flex items-center justify-center overflow-hidden">
                   <motion.div
-                        className="relative w-full h-full max-w-[calc(100vh*16/9)] max-h-[calc(100vw*9/16)] flex flex-col justify-end bg-black overflow-hidden font-sans shadow-2xl"
+                        className="relative w-full h-full max-w-[calc(100vh*16/9)] max-h-[calc(100vw*9/16)] flex flex-col justify-end bg-black overflow-hidden shadow-2xl scanline-overlay vignette"
+                        style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                         animate={shakeAnimation}
                   >
 
@@ -317,13 +322,14 @@ const VisualNovelEngine = () => {
                                                 </motion.div>
                                           )}
 
-                                          {/* Nome do Personagem que fala */}
-                                          <div className="font-black text-2xl md:text-3xl uppercase tracking-widest text-white drop-shadow-md">
+                                          {/* Nome do Personagem (Cyberpunk Orbitron Font) */}
+                                          <div className={`font-cyber text-2xl md:text-3xl tracking-widest drop-shadow-md ${gradientText}`}
+                                                style={{ fontFamily: "'Orbitron', monospace" }}>
                                                 {scene.speakerName}
                                           </div>
 
                                           {/* Texto Principal (Typing Effect) */}
-                                          <div className="text-xl md:text-2xl lg:text-3xl leading-snug min-h-[120px] drop-shadow-lg font-medium text-gray-50">
+                                          <div className="text-xl md:text-2xl lg:text-3xl leading-snug min-h-[120px] shadow-text font-medium text-gray-50">
                                                 {isTyping ? (
                                                       <TypewriterText text={scene.text} onComplete={() => setIsTyping(false)} />
                                                 ) : (
@@ -358,9 +364,9 @@ const VisualNovelEngine = () => {
                                                 whileHover={{ scale: 1.01, x: 10, boxShadow: "0px 0px 15px rgba(255,255,255,0.2)" }}
                                                 whileTap={{ scale: 0.98 }}
                                                 onClick={() => handleChoice(choice)}
-                                                className={`text-left px-6 py-5 rounded-lg border-l-4 ${btnClass} font-bold text-xl md:text-2xl transition-colors focus:outline-none flex items-center justify-center gap-3 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.8)] ${idx === selectedChoiceIdx ? 'ring-4 ring-white/70 scale-[1.02]' : ''}`}
+                                                className={`text-left px-6 py-5 rounded-xl btn-premium ${btnGlow} font-semibold text-xl md:text-2xl focus:outline-none flex items-center gap-4 ${idx === selectedChoiceIdx ? 'arcade-selected' : ''}`}
                                           >
-                                                <span className="w-2 h-2 rounded-full bg-white/50" />
+                                                <span className={`w-2.5 h-2.5 rounded-full ${scene.uiTheme === 'glitch' ? 'bg-red-400' : scene.uiTheme === 'distopic' ? 'bg-emerald-400' : scene.uiTheme === 'cyber' ? 'bg-fuchsia-400' : 'bg-blue-400'} shadow-lg`} />
                                                 {choice.label}
                                           </motion.button>
                                     ))}

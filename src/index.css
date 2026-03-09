@@ -2,7 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+/* ============================
+   PREMIUM VISUAL ENGINE v2.0
+   Studio-quality CSS System
+   ============================ */
+
+/* === Global Resets & GPU Rendering === */
+*,
+*::before,
+*::after {
+      box-sizing: border-box;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
@@ -14,12 +23,11 @@ body {
       background-color: #000;
       color: #fff;
       overflow: hidden;
-      /* GPU-accelerated rendering for maximum visual quality */
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
 }
 
-/* Hide scrollbars everywhere for full immersion */
 ::-webkit-scrollbar {
       display: none;
 }
@@ -28,14 +36,156 @@ body {
       scrollbar-width: none;
 }
 
-/* Smooth image scaling for 4K assets */
+/* === Premium Image Rendering === */
 img {
       image-rendering: auto;
       -webkit-transform: translateZ(0);
       transform: translateZ(0);
 }
 
-/* Utilitário global para a sombra do texto das diálogos ganharem contraste */
+/* === Cinematic Scanline Overlay (Cyberpunk texture) === */
+.scanline-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg,
+                  rgba(0, 0, 0, 0.03) 0px,
+                  rgba(0, 0, 0, 0.03) 1px,
+                  transparent 1px,
+                  transparent 3px);
+      pointer-events: none;
+      z-index: 5;
+      mix-blend-mode: multiply;
+}
+
+/* === Cinematic Vignette (Premium Dark Edges) === */
+.vignette::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
+      pointer-events: none;
+      z-index: 4;
+}
+
+/* === Premium Glassmorphism Panel === */
+.glass-panel {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* === Neon Glow Effects for Buttons === */
+.glow-blue {
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), 0 0 60px rgba(59, 130, 246, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glow-red {
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.4), 0 0 60px rgba(239, 68, 68, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glow-emerald {
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3), 0 0 60px rgba(16, 185, 129, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glow-purple {
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.3), 0 0 60px rgba(168, 85, 247, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* === Animated Selection Ring (Arcade) === */
+.arcade-selected {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.3), 0 0 60px rgba(255, 255, 255, 0.1);
+      transform: scale(1.02);
+}
+
+/* === Premium Button Gradient Border === */
+.btn-premium {
+      position: relative;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-premium:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+}
+
+/* === Cyberpunk Header Font === */
+.font-cyber {
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+}
+
+/* === Animated Neon Pulse (for alert buttons) === */
+@keyframes neonPulse {
+
+      0%,
+      100% {
+            opacity: 1;
+            text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+      }
+
+      50% {
+            opacity: 0.85;
+            text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+      }
+}
+
+.neon-pulse {
+      animation: neonPulse 2s ease-in-out infinite;
+}
+
+/* === Premium Text Shadow Stack === */
 .shadow-text {
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9), 0px 0px 2px rgba(0, 0, 0, 1);
+      text-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.9),
+            0 4px 8px rgba(0, 0, 0, 0.6),
+            0 0 2px rgba(0, 0, 0, 1);
+}
+
+/* === Gradient Text for Speaker Names === */
+.gradient-text-blue {
+      background: linear-gradient(135deg, #60a5fa, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-red {
+      background: linear-gradient(135deg, #f87171, #fb923c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-emerald {
+      background: linear-gradient(135deg, #34d399, #a3e635);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-purple {
+      background: linear-gradient(135deg, #c084fc, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+}
+
+/* === Loading Shimmer (for image transitions) === */
+@keyframes shimmer {
+      0% {
+            background-position: -200% 0;
+      }
+
+      100% {
+            background-position: 200% 0;
+      }
+}
+
+.shimmer {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+      background-size: 200% 100%;
+      animation: shimmer 3s ease-in-out infinite;
 }

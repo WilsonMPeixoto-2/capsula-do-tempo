@@ -522,14 +522,14 @@ const VisualNovelEngine = () => {
       const showRain = scene.uiTheme === 'distopic' || scene.uiTheme === 'cyber';
       const showLightning = scene.uiTheme === 'glitch';
 
-      // Color vibrancy filter per theme
+      // Color vibrancy + EXTREME GPU SHARPENING filter per theme
       const colorFilter = scene.uiTheme === 'glitch'
-            ? 'saturate(1.3) contrast(1.15) brightness(1.05)'
+            ? 'url(#super-sharpen) saturate(1.3) contrast(1.15) brightness(1.05)'
             : scene.uiTheme === 'distopic'
-                  ? 'saturate(1.4) contrast(1.1) brightness(1.02)'
+                  ? 'url(#super-sharpen) saturate(1.4) contrast(1.1) brightness(1.02)'
                   : scene.uiTheme === 'cyber'
-                        ? 'saturate(1.35) contrast(1.1) brightness(1.05)'
-                        : 'saturate(1.2) contrast(1.05) brightness(1.03)';
+                        ? 'url(#super-sharpen) saturate(1.35) contrast(1.1) brightness(1.05)'
+                        : 'url(#super-sharpen) saturate(1.2) contrast(1.05) brightness(1.03)';
 
       return (
             <div className="w-full h-screen bg-black flex items-center justify-center overflow-hidden">
@@ -558,7 +558,8 @@ const VisualNovelEngine = () => {
                                                 objectPosition: 'center center',
                                                 transform: 'translateZ(0)',
                                                 backfaceVisibility: 'hidden',
-                                                filter: colorFilter
+                                                filter: colorFilter,
+                                                imageRendering: 'high-quality'
                                           }}
                                     />
                               </motion.div>

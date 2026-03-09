@@ -542,16 +542,11 @@ const VisualNovelEngine = () => {
                         <AnimatePresence mode="wait">
                               <motion.div
                                     key={scene.eventCG || scene.bgImage}
-                                    initial={{ opacity: 0, scale: 1.08 }}
-                                    animate={{ opacity: 1, scale: 1, x: [0, -8, 0], y: [0, -5, 0] }}
+                                    initial={{ opacity: 0, scale: 1.02 }}
+                                    animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0 }}
-                                    transition={{
-                                          opacity: { duration: 1.2, ease: 'easeOut' },
-                                          scale: { duration: 1.2, ease: 'easeOut' },
-                                          x: { duration: 20, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' },
-                                          y: { duration: 15, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }
-                                    }}
-                                    className="absolute inset-[-20px]"
+                                    transition={{ duration: 1.2, ease: 'easeOut' }}
+                                    className="absolute inset-0"
                                     style={{ willChange: 'opacity, transform' }}
                               >
                                     <img
@@ -560,11 +555,10 @@ const VisualNovelEngine = () => {
                                           className="w-full h-full"
                                           style={{
                                                 objectFit: 'cover',
-                                                objectPosition: 'center center',
+                                                objectPosition: 'center top',
                                                 transform: 'translateZ(0)',
                                                 backfaceVisibility: 'hidden',
-                                                filter: colorFilter,
-                                                imageRendering: 'auto'
+                                                filter: colorFilter
                                           }}
                                     />
                               </motion.div>

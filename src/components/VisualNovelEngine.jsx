@@ -490,7 +490,7 @@ const VisualNovelEngine = () => {
       return (
             <div className="w-full h-screen bg-black flex items-center justify-center overflow-hidden">
                   <motion.div
-                        className="relative w-full h-full max-w-[calc(100vh*16/9)] max-h-[calc(100vw*9/16)] flex flex-col justify-end bg-black overflow-hidden shadow-2xl scanline-overlay vignette"
+                        className="relative w-full h-full flex flex-col justify-end bg-black overflow-hidden shadow-2xl scanline-overlay vignette"
                         style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                         animate={shakeAnimation}
                   >
@@ -502,14 +502,21 @@ const VisualNovelEngine = () => {
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0 }}
                                     transition={{ duration: 1.2, ease: "easeOut" }}
-                                    className="absolute inset-0 bg-cover bg-center"
-                                    style={{
-                                          backgroundImage: `url(${scene.eventCG || scene.bgImage})`,
-                                          willChange: 'opacity, transform',
-                                          transform: 'translateZ(0)',
-                                          backfaceVisibility: 'hidden'
-                                    }}
-                              />
+                                    className="absolute inset-0"
+                                    style={{ willChange: 'opacity, transform' }}
+                              >
+                                    <img
+                                          src={scene.eventCG || scene.bgImage}
+                                          alt=""
+                                          className="w-full h-full"
+                                          style={{
+                                                objectFit: 'cover',
+                                                objectPosition: 'center center',
+                                                transform: 'translateZ(0)',
+                                                backfaceVisibility: 'hidden'
+                                          }}
+                                    />
+                              </motion.div>
                         </AnimatePresence>
 
                         {/* Weather Effects */}
@@ -519,8 +526,8 @@ const VisualNovelEngine = () => {
                         {/* Atmospheric Tint */}
                         {!scene.eventCG && (
                               <div className={`absolute inset-0 pointer-events-none transition-colors duration-1000 ${scene.uiTheme === 'glitch' ? 'bg-red-950/20' :
-                                          scene.uiTheme === 'distopic' ? 'bg-emerald-950/30' :
-                                                scene.uiTheme === 'cyber' ? 'bg-fuchsia-950/20' : 'bg-transparent'
+                                    scene.uiTheme === 'distopic' ? 'bg-emerald-950/30' :
+                                          scene.uiTheme === 'cyber' ? 'bg-fuchsia-950/20' : 'bg-transparent'
                                     }`} />
                         )}
 

@@ -534,7 +534,7 @@ const VisualNovelEngine = () => {
       return (
             <div className="w-full h-screen bg-black flex items-center justify-center overflow-hidden">
                   <motion.div
-                        className="relative w-full h-full flex flex-col justify-end bg-black overflow-hidden shadow-2xl scanline-overlay vignette"
+                        className="relative w-full h-full max-w-[calc(100vh*16/9)] max-h-[calc(100vw*9/16)] flex flex-col justify-end bg-black overflow-hidden shadow-2xl scanline-overlay vignette"
                         style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                         animate={shakeAnimation}
                   >
@@ -554,7 +554,7 @@ const VisualNovelEngine = () => {
                                           alt=""
                                           className="w-full h-full"
                                           style={{
-                                                objectFit: 'contain',
+                                                objectFit: 'cover',
                                                 objectPosition: 'center center',
                                                 transform: 'translateZ(0)',
                                                 backfaceVisibility: 'hidden',

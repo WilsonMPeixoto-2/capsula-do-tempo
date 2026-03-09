@@ -37,6 +37,7 @@ const VisualNovelEngine = () => {
       const [inventory, setInventory] = useState([]);
       const [isTyping, setIsTyping] = useState(true);
       const [selectedChoiceIdx, setSelectedChoiceIdx] = useState(0);
+      const [isTtsEnabled, setIsTtsEnabled] = useState(false);
 
       const bgMusicRef = useRef(null);
       const sfxRef = useRef(null);
@@ -118,13 +119,24 @@ const VisualNovelEngine = () => {
             setIsTyping(true);
       }, [currentSceneId, scene]);
 
+      // TTS Narration for Accessibility
+      useEffect(() => {
+            if (!isTtsEnabled || !scene || scene.text === "") return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(scene.text);
+            utterance.lang = 'pt-BR';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+      }, [currentSceneId, isTtsEnabled, scene]);
+
       if (!scene) {
             return <div className="text-red-500 font-bold p-10 flex h-screen items-center justify-center bg-black">ERROR: Cena '{currentSceneId}' não encontrada. Fim da Rota?</div>;
       }
 
       const handleChoice = (choice) => {
+            window.speechSynthesis.cancel();
             if (choice.nextScene === 'title_screen') {
-                  setInventory([]); // Reseta o jogo ao voltar para o início
+                  setInventory([]);
             } else if (choice.gainItem && !inventory.includes(choice.gainItem)) {
                   setInventory([...inventory, choice.gainItem]);
             }
@@ -248,7 +260,7 @@ const VisualNovelEngine = () => {
                                           transition={{ duration: 0.6, ease: "backOut" }}
                                           className="absolute bottom-6 left-1/2 transform -translate-x-1/2 md:translate-x-0 md:left-[10%] max-w-sm pointer-events-none z-0"
                                     >
-                                          <img src={scene.npcSprite} alt={scene.speakerName} className="h-[75vh] object-contain drop-shadow-[0_0_25px_rgba(0,0,0,0.9)] mix-blend-multiply" />
+                                          <img src={scene.npcSprite} alt={scene.speakerName} className="h-[75vh] object-contain drop-shadow-[0_0_25px_rgba(0,0,0,0.9)]" />
                                     </motion.div>
                               )}
                         </AnimatePresence>
@@ -297,8 +309,19 @@ const VisualNovelEngine = () => {
                               </motion.div>
                         )}
 
-                        {/* Botões de Escolha Rápidos e Bonitos - Separados da Caixa de Texto para funcionar no Menu Iniciar */}
+                        {/* Botões de Escolha Rápidos e Bonitos + Toggle de Acessibilidade no Título */}
                         <div className={`relative z-20 w-full max-w-6xl mx-auto px-6 md:px-10 pb-10 mt-6 flex flex-col gap-3 transition-opacity duration-500 ${!isTyping || scene.text === "" ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                              {/* TTS Toggle on Title Screen */}
+                              {currentSceneId === 'title_screen' && (!isTyping || scene.text === "") && (
+                                    <motion.button
+                                          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                                          onClick={() => setIsTtsEnabled(!isTtsEnabled)}
+                                          className={`self-center mb-2 px-6 py-3 rounded-full text-lg font-bold transition-all border-2 ${isTtsEnabled ? 'bg-emerald-600 border-emerald-400 text-white' : 'bg-black/60 border-gray-500 text-gray-300 hover:border-white'
+                                                }`}
+                                    >
+                                          {isTtsEnabled ? '🔊 Acessibilidade: VOZ ATIVADA' : '🔇 Acessibilidade: Ativar Voz'}
+                                    </motion.button>
+                              )}
                               <AnimatePresence>
                                     {(!isTyping || scene.text === "") && availableChoices.map((choice, idx) => (
                                           <motion.button

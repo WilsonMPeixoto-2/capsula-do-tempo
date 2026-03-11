@@ -26,17 +26,19 @@ async function fixTransparency() {
             const original = sharp(filePath);
             const { width, height } = await original.metadata();
 
-            // 1. Create a mask: black where it's white, white where it's not
-            // We use threshold to isolate non-white areas.
+            // 1. Create a mask: black where it's near-white or near-grey-checkerboard, white where it's not
+            // We use a stricter threshold (190) to kill the grey checkerboard (cca 204)
             const mask = await sharp(filePath)
-                .threshold(250, { grayscale: true }) // Pixels > 250 (near white) become 255
-                .negate() // Invert: White becomes black, rest becomes white
-                .blur(0.5) // Slight feathering
+                .threshold(190, { grayscale: true }) 
+                .negate() 
+                .blur(0.5) 
                 .toBuffer();
 
-            // 2. Apply it as alpha
+            // 2. Apply it as alpha and also increase contrast/saturation to make it pop
             await sharp(filePath)
                 .joinChannel(mask)
+                .modulate({ brightness: 1.05, saturation: 1.15 })
+                .sharpen()
                 .png()
                 .toFile(tempPath);
 

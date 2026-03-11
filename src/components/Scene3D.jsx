@@ -68,8 +68,8 @@ const PostProcessingEffects = ({ theme }) => {
                   {/* Cinematic Vignette - Much subtler to maintain original image brightness */}
                   <Vignette 
                         eskil={false} 
-                        offset={0.3} 
-                        darkness={0.6} 
+                        offset={0.5} 
+                        darkness={0.3} 
                         blendFunction={BlendFunction.MULTIPLY} 
                   />
             </EffectComposer>

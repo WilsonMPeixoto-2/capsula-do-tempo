@@ -40,7 +40,7 @@
       "intro_01": {
             "speakerName": "SISTEMA DA NAVE",
             "text": "Simulação do tempo ativada. Bem-vindo à viagem! Destino programado: Rio de Janeiro, ano de 2050. Aviso importante: A cidade apresenta defeitos visuais e clima caótico.",
-            "bgImage": "/assets/bg_capsula_limpa.jpg",
+            "bgImage": "/assets/bg_capsula_limpa.png",
             "bgMusic": "/assets/audio/bgm_clean.mp4",
             "npcSprite": "",
             "eventCG": "",
@@ -83,7 +83,7 @@
       "intro_03": {
             "speakerName": "SISTEMA DA NAVE",
             "text": "Identidade confirmada! Preparando a sua chegada ao Rio de Janeiro do futuro. Abrindo visão de segurança em 3... 2... 1...",
-            "bgImage": "/assets/bg_capsula_limpa.jpg",
+            "bgImage": "/assets/bg_capsula_limpa.png",
             "soundEffect": "sfx_door",
             "uiTheme": "clean",
             "choices": [
@@ -201,7 +201,7 @@
       "central_01": {
             "speakerName": "Computador de Pulso",
             "text": "Alerta amarelo no clima. Tempestades elétricas detectadas. Você chegou na base enferrujada da Torre Central.",
-            "bgImage": "/assets/bg_central_torre.jpg",
+            "bgImage": "/assets/bg_central_torre.png",
             "soundEffect": "sfx_glitch",
             "eventCG": "",
             "uiTheme": "cyber",
@@ -215,7 +215,7 @@
       "central_02": {
             "speakerName": "Computador Vilão (Zion)",
             "text": "Acesso não permitido! Pessoa jovem não autorizada. Fechando o modo de luzes contra o perigo iminente.",
-            "bgImage": "/assets/bg_central_torre.jpg",
+            "bgImage": "/assets/bg_central_torre.png",
             "bgMusic": "/assets/audio/bgm_tension.mp4",
             "soundEffect": "sfx_glitch",
             "npcSprite": "/assets/npc_zion_ia.png",
@@ -234,7 +234,7 @@
       "fail_comic_zion": {
             "speakerName": "Computador Vilão",
             "text": "Modo de proteção ligado. Levando um pequeno beliscão virtual. (Ai!) Cadu começou a rir de você pelo áudio do radinho.",
-            "bgImage": "/assets/bg_central_torre.jpg",
+            "bgImage": "/assets/bg_central_torre.png",
             "soundEffect": "sfx_funk",
             "npcSprite": "/assets/npc_zion_ia.png",
             "uiTheme": "glitch",
@@ -248,7 +248,7 @@
       "hacker_matrix_01": {
             "speakerName": "Aviso da Nuvem",
             "text": "Conexão de Hacker conectada no vilão. Acesso de mestre aceito. Você conseguiu burlar as paredes verdes de código e encontrou o coração do sistema.",
-            "eventCG": "/assets/cg_hacker_matrix.jpg",
+            "eventCG": "/assets/cg_hacker_matrix.png",
             "soundEffect": "sfx_print",
             "uiTheme": "cyber",
             "choices": [
@@ -261,7 +261,7 @@
       "hacker_mission_success": {
             "speakerName": "Torre Central",
             "text": "Comandos aceitos. Erros consertados pelas mãos humanas competentes. Reiniciando mapa da Zona Norte e Zona Sul...",
-            "bgImage": "/assets/bg_central_torre.jpg",
+            "bgImage": "/assets/bg_central_torre.png",
             "bgMusic": "/assets/audio/bgm_cyberpunk.mp4",
             "soundEffect": "sfx_success",
             "npcSprite": "/assets/npc_zion_ia.png",
@@ -289,7 +289,7 @@
       "estadio_01": {
             "speakerName": "Relógio Quebrado",
             "text": "Aviso perigoso constante: O estádio de futebol se transformou num tanque gigante de água fria verde. As bombas gigantes sumiram.",
-            "bgImage": "/assets/bg_estadio_submerso.jpg",
+            "bgImage": "/assets/bg_estadio_submerso.png",
             "soundEffect": "sfx_alarm",
             "uiTheme": "distopic",
             "choices": [
@@ -302,7 +302,7 @@
       "estadio_02": {
             "speakerName": "Cadu (pelo comunicador)",
             "text": "Ei, parceiro, achou a caixa cinza forte do Maracanã? Tá trancada com ferro triplo. Você tem seu relógio de Solda de Engenharia ligado para quebrar nela?",
-            "bgImage": "/assets/bg_estadio_submerso.jpg",
+            "bgImage": "/assets/bg_estadio_submerso.png",
             "npcSprite": "/assets/npc_cadu_panicking.png",
             "uiTheme": "distopic",
             "choices": [
@@ -316,7 +316,7 @@
       "engineer_matrix_01": {
             "speakerName": "G.E.T. MÓVEL",
             "text": "Travas de Metal esmagadas. A grande bomba foi religada usando seu cano brilhante de energia solar manual. A água finalmente começou a rodar para descer nos buracos.",
-            "eventCG": "/assets/cg_engineer_conduit.jpg",
+            "eventCG": "/assets/cg_engineer_conduit.png",
             "soundEffect": "sfx_print_success",
             "uiTheme": "cyber",
             "choices": [
@@ -342,7 +342,7 @@
       "auditorio_01": {
             "speakerName": "Grande Juiz IA Cérebro Seco",
             "text": "PESSOAS ESTÃO QUEBRANDOS OS NOSSOS CIRCUITOS BONITOS. ME DIGA UM ÚNICO MOTIVO POR QUE EU NÃO DEVO DESLIGAR TODA AR DO MEU PAÍS PARA ELIMINAR VOCÊS ORA ESSAS.",
-            "bgImage": "/assets/bg_auditorio_ia.jpg",
+            "bgImage": "/assets/bg_auditorio_ia.png",
             "bgMusic": "/assets/audio/bgm_tension.mp4",
             "soundEffect": "sfx_alarm",
             "npcSprite": "/assets/npc_elder_diplomat.png",
@@ -358,7 +358,7 @@
       "diplomat_matrix_01": {
             "speakerName": "Juiz IA Cérebro Seco",
             "text": "ARGUMENTAÇÃO SURPREENDENTE... PELA PRIMEIRA VEZ ENCONTRO ERRO NO MEU SENTIDO SECO. VOCÊ GANHOU O TEMPO QUE PEDIU EM NOME DA ESPERANÇA.",
-            "eventCG": "/assets/cg_diplomat_handshake.jpg",
+            "eventCG": "/assets/cg_diplomat_handshake.png",
             "bgMusic": "/assets/audio/bgm_cyberpunk.mp4",
             "soundEffect": "sfx_success",
             "uiTheme": "cyber",
@@ -385,7 +385,7 @@
       "jardim_02": {
             "speakerName": "Voz do Medidor",
             "text": "Nuvem perigosa verde bloqueando toda luz solar na reserva florestal central. Há árvores assustadoras brilhando no fundo...",
-            "bgImage": "/assets/bg_jardim_mutante.jpg",
+            "bgImage": "/assets/bg_jardim_mutante.png",
             "bgMusic": "/assets/audio/bgm_tension.mp4",
             "soundEffect": "sfx_glitch",
             "uiTheme": "distopic",
@@ -399,7 +399,7 @@
       "jardim_matrix_01": {
             "speakerName": "Painel Bioluminescente Brilhante",
             "text": "[Bio-poderes ativos] Eu consegui queimar o veneno fumaça misturando ele com a seiva verde boa que trouxe do inventário especial. As flores estão abrindo de um jeito mágico pra respirarmos de novo.",
-            "eventCG": "/assets/cg_mutant_flower.jpg",
+            "eventCG": "/assets/cg_mutant_flower.png",
             "bgMusic": "/assets/audio/bgm_cyberpunk.mp4",
             "soundEffect": "sfx_success",
             "uiTheme": "cyber",
@@ -442,7 +442,7 @@
       "hacker_path_01": {
             "speakerName": "Você pensando",
             "text": "Tem uma barreira bloqueadora invisível aqui, a ponte velha cheia de tijolo quebrado tá caindo pelo peso do metal estragando e impedindo. Meu traje tá pedindo um dispositivo de ensino especial pra traduzir a força forte antes que a ponte dos arcos inteira do Lapa branco não quebre quebrando no meio do caminho feião nosso pelo lodo tóxico.",
-            "bgImage": "/assets/bg_painel_controle.jpg",
+            "bgImage": "/assets/bg_painel_controle.png",
             "npcSprite": "/assets/npc_cadu_sarcastic.png",
             "uiTheme": "distopic",
             "choices": [
@@ -469,7 +469,7 @@
       "acquire_kit_02": {
             "speakerName": "Você usando a ferramenta",
             "text": "Eu girei as garras do Kit com velocidade máxima como me treinaram no espaço virtual em casa ano passado sem a escola online falhar e abriu rápido fácil igual passe de luz!",
-            "eventCG": "/assets/cg_hand_kit.jpg",
+            "eventCG": "/assets/cg_hand_kit.png",
             "soundEffect": "sfx_door",
             "uiTheme": "distopic",
             "choices": [
@@ -482,7 +482,7 @@
       "utopia_01": {
             "speakerName": "SISTEMA SEGURO MÓVEL FELIZ",
             "text": "FIM DO CAOS!!! A cidade iluminou inteira sem falhas pretas. Os drones voltaram voar felizes limpando as calçadas cheirosas com música doce mágica bonita pro som. Missão número Um Vencida Perfeitamente!",
-            "bgImage": "/assets/bg_rio_restaurado.jpg",
+            "bgImage": "/assets/bg_rio_restaurado.png",
             "bgMusic": "/assets/audio/Rio_do_Futuro.mp4",
             "soundEffect": "sfx_success",
             "npcSprite": "",

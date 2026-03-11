@@ -7,15 +7,25 @@ const AvatarRenderer = ({ options }) => {
 
       // Construct the expected file name based on the combination of 16 avatars
       // Example: avatar_m_light_tech.jpg
-      const imgName = `avatar_${gender}_${skin}_${style}.png`;
-      const imgPath = `/avatars/${imgName}`;
-
       const [imgError, setImgError] = useState(false);
+      const [extension, setExtension] = useState('png');
 
-      // Reset error state when options change
+      // Reset error state and try png first when options change
       React.useEffect(() => {
             setImgError(false);
+            setExtension('png');
       }, [options]);
+
+      const imgName = `avatar_${gender}_${skin}_${style}.${extension}`;
+      const imgPath = `/avatars/${imgName}`;
+
+      const handleImgError = () => {
+            if (extension === 'png') {
+                  setExtension('jpg'); // Try JPG if PNG fails
+            } else {
+                  setImgError(true); // Both failed
+            }
+      };
 
       return (
             <div className="w-full h-full relative flex items-center justify-center p-4">
@@ -38,7 +48,7 @@ const AvatarRenderer = ({ options }) => {
                                           src={imgPath} 
                                           alt="Avatar" 
                                           className="w-full h-full object-cover object-top filter contrast-125 saturate-110"
-                                          onError={() => setImgError(true)}
+                                          onError={handleImgError}
                                     />
                               ) : (
                                     <div className="w-full h-full flex flex-col items-center justify-center text-primary/50 relative overflow-hidden">

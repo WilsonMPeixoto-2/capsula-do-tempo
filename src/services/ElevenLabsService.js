@@ -1,5 +1,15 @@
+const getStoredApiKey = () => {
+  if (typeof window === 'undefined') return '';
+
+  try {
+    return window.localStorage.getItem('elevenlabs_key') || '';
+  } catch {
+    return '';
+  }
+};
+
 export const ElevenLabsService = {
-  apiKey: localStorage.getItem('elevenlabs_key') || '',
+  apiKey: getStoredApiKey(),
   currentAudio: null,
   
   voiceMap: {
@@ -12,12 +22,17 @@ export const ElevenLabsService = {
   },
 
   setApiKey(key) {
+    if (typeof window === 'undefined') {
+      this.apiKey = key || '';
+      return;
+    }
+
     if (key) {
       this.apiKey = key;
-      localStorage.setItem('elevenlabs_key', key);
+      window.localStorage.setItem('elevenlabs_key', key);
     } else {
       this.apiKey = '';
-      localStorage.removeItem('elevenlabs_key');
+      window.localStorage.removeItem('elevenlabs_key');
     }
   },
 
@@ -27,7 +42,9 @@ export const ElevenLabsService = {
       this.currentAudio.currentTime = 0;
       this.currentAudio = null;
     }
-    window.speechSynthesis.cancel();
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
   },
 
   async speak(text, speakerName, sceneId) {
@@ -101,6 +118,8 @@ export const ElevenLabsService = {
   },
 
   speakNative(text) {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'pt-BR';
     utterance.rate = 0.9;

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback, Suspense } from 'react';
-import { ShieldAlert, Cpu, HeartHandshake, Eye, Map, Menu, X, Home, RotateCcw, Volume2, VolumeX } from 'lucide-react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
+import { Cpu, HeartHandshake, Eye, Map, Menu, X, Home, RotateCcw, Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import storyData from '../data/storyData.json';
 import { useGame } from '../context/GameContext';
@@ -129,8 +129,10 @@ const VisualNovelEngine = () => {
       const [selectedChoiceIdx, setSelectedChoiceIdx] = useState(0);
       const [isTtsEnabled, setIsTtsEnabled] = useState(false);
       const [isMenuOpen, setIsMenuOpen] = useState(false);
+      const [isVoiceConfigOpen, setIsVoiceConfigOpen] = useState(false);
       const [sceneHistory, setSceneHistory] = useState([]);
       const [isMuted, setIsMuted] = useState(false);
+      const [ttsApiKeyInput, setTtsApiKeyInput] = useState(() => ElevenLabsService.apiKey);
 
       const bgMusicRef = useRef(null);
       const lastDroneRef = useRef('');
@@ -182,32 +184,59 @@ const VisualNovelEngine = () => {
             setIsTyping(true);
       }, [currentSceneId, scene, isMuted]);
 
+      useEffect(() => {
+            if (!scene?.soundEffect || isMuted) return;
+            AmbientAudioEngine.playSceneEffect(scene.soundEffect);
+      }, [currentSceneId, isMuted, scene]);
+
       // TTS
       useEffect(() => {
             if (!isTtsEnabled || !scene || scene.text === "") return;
             ElevenLabsService.speak(scene.text, scene.speakerName, currentSceneId);
       }, [currentSceneId, isTtsEnabled, scene]);
 
+      useEffect(() => {
+            setTtsApiKeyInput(ElevenLabsService.apiKey);
+      }, [isVoiceConfigOpen]);
+
       if (!scene) {
             return <div className="text-red-500 font-bold p-10 flex h-screen items-center justify-center bg-black">ERROR: Cena '{currentSceneId}' não encontrada.</div>;
       }
 
+      const openVoiceConfig = () => {
+            setTtsApiKeyInput(ElevenLabsService.apiKey);
+            setIsVoiceConfigOpen(true);
+            setIsMenuOpen(false);
+      };
+
       const handleTtsToggle = () => {
-            if (!isTtsEnabled) {
-                  const hasKey = !!ElevenLabsService.apiKey;
-                  const key = window.prompt("MODO DE VOZ AAA (ElevenLabs)\n\nSe você possui uma API Key da ElevenLabs, insira aqui para ouvir vozes cinematográficas geradas por IA!\n\n(Deixe em branco para usar a voz sintética padrão do navegador)", hasKey ? ElevenLabsService.apiKey : "");
-                  
-                  if (key !== null) {
-                        ElevenLabsService.setApiKey(key.trim());
-                        setIsTtsEnabled(true);
-                        // Optional play on enable:
-                        if (scene && scene.text && document.hidden === false) {
-                              ElevenLabsService.speak(scene.text, scene.speakerName, currentSceneId);
-                        }
-                  }
-            } else {
+            if (isTtsEnabled) {
                   setIsTtsEnabled(false);
                   ElevenLabsService.stop();
+                  return;
+            }
+
+            openVoiceConfig();
+      };
+
+      const saveVoiceSettings = () => {
+            ElevenLabsService.setApiKey(ttsApiKeyInput.trim());
+            setIsTtsEnabled(true);
+            setIsVoiceConfigOpen(false);
+
+            if (scene && scene.text && document.hidden === false) {
+                  ElevenLabsService.speak(scene.text, scene.speakerName, currentSceneId);
+            }
+      };
+
+      const useBrowserVoice = () => {
+            ElevenLabsService.setApiKey('');
+            setTtsApiKeyInput('');
+            setIsTtsEnabled(true);
+            setIsVoiceConfigOpen(false);
+
+            if (scene && scene.text && document.hidden === false) {
+                  ElevenLabsService.speak(scene.text, scene.speakerName, currentSceneId);
             }
       };
 
@@ -434,10 +463,85 @@ const VisualNovelEngine = () => {
                                                 {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
                                                 {isMuted ? 'Som: DESLIGADO' : 'Som: LIGADO'}
                                           </button>
-                                          <button onClick={() => { handleTtsToggle(); setIsMenuOpen(false); }}
+                                          <button onClick={handleTtsToggle}
                                                 className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-all text-lg">
                                                 {isTtsEnabled ? '🔊' : '🔇'} Voz: {isTtsEnabled ? 'ATIVADA' : 'DESATIVADA'}
                                           </button>
+                                          <button onClick={openVoiceConfig}
+                                                className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-all text-lg">
+                                                Ajustar Voz IA
+                                          </button>
+                                    </motion.div>
+                              )}
+                        </AnimatePresence>
+
+                        <AnimatePresence>
+                              {isVoiceConfigOpen && (
+                                    <motion.div
+                                          initial={{ opacity: 0 }}
+                                          animate={{ opacity: 1 }}
+                                          exit={{ opacity: 0 }}
+                                          className="absolute inset-0 z-[120] flex items-center justify-center bg-black/70 backdrop-blur-md px-4"
+                                    >
+                                          <motion.div
+                                                initial={{ opacity: 0, y: 24 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: 24 }}
+                                                className="w-full max-w-xl rounded-2xl border border-white/15 bg-zinc-950/95 p-6 shadow-2xl"
+                                          >
+                                                <div className="flex items-start justify-between gap-4">
+                                                      <div>
+                                                            <h2 className="text-2xl font-bold text-white" style={{ fontFamily: "'Orbitron', monospace" }}>
+                                                                  Configurar Voz
+                                                            </h2>
+                                                            <p className="mt-2 text-sm text-white/70">
+                                                                  Cole sua chave da ElevenLabs para vozes premium ou continue com a voz nativa do navegador.
+                                                            </p>
+                                                      </div>
+                                                      <button
+                                                            onClick={() => setIsVoiceConfigOpen(false)}
+                                                            className="rounded-lg border border-white/10 p-2 text-white/70 transition hover:text-white"
+                                                      >
+                                                            <X size={18} />
+                                                      </button>
+                                                </div>
+
+                                                <label className="mt-6 block text-sm font-semibold uppercase tracking-[0.2em] text-white/60">
+                                                      API Key da ElevenLabs
+                                                </label>
+                                                <input
+                                                      type="password"
+                                                      value={ttsApiKeyInput}
+                                                      onChange={(e) => setTtsApiKeyInput(e.target.value)}
+                                                      placeholder="Cole aqui sua chave, se quiser voz premium"
+                                                      className="mt-3 w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white outline-none transition focus:border-blue-400"
+                                                />
+
+                                                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                                                      <button
+                                                            onClick={() => {
+                                                                  ElevenLabsService.setApiKey('');
+                                                                  setTtsApiKeyInput('');
+                                                                  setIsVoiceConfigOpen(false);
+                                                            }}
+                                                            className="rounded-xl border border-white/10 px-5 py-3 text-white/75 transition hover:bg-white/5 hover:text-white"
+                                                      >
+                                                            Limpar Chave
+                                                      </button>
+                                                      <button
+                                                            onClick={useBrowserVoice}
+                                                            className="rounded-xl border border-blue-400/30 bg-blue-500/10 px-5 py-3 text-blue-100 transition hover:bg-blue-500/20"
+                                                      >
+                                                            Usar Voz do Navegador
+                                                      </button>
+                                                      <button
+                                                            onClick={saveVoiceSettings}
+                                                            className="rounded-xl border border-emerald-400/30 bg-emerald-500/15 px-5 py-3 font-semibold text-emerald-100 transition hover:bg-emerald-500/25"
+                                                      >
+                                                            Ativar Voz IA
+                                                      </button>
+                                                </div>
+                                          </motion.div>
                                     </motion.div>
                               )}
                         </AnimatePresence>

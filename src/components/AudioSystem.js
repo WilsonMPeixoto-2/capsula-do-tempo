@@ -3,15 +3,22 @@ import { Howl, Howler } from 'howler';
 // Master Volume Configuration
 Howler.volume(0.8);
 
+const AVAILABLE_BGM_TRACKS = new Set([
+      '/assets/audio/Rio_do_Futuro.mp4',
+]);
+
 export const AmbientAudioEngine = {
       drone: null,
       bgm: null,
+      activeTimeouts: [],
       
       init() {
             // Howler initializes itself automatically.
       },
 
       stopAll() {
+            this.activeTimeouts.forEach((timeoutId) => clearTimeout(timeoutId));
+            this.activeTimeouts = [];
             if (this.drone) {
                   this.drone.stop();
                   this.drone.unload();
@@ -180,14 +187,130 @@ export const AmbientAudioEngine = {
             }
       },
 
+      playSuccess() {
+            if (!Howler.ctx) return;
+            const ctx = Howler.ctx;
+            const notes = [440, 554.37, 659.25];
+
+            notes.forEach((frequency, index) => {
+                  const osc = ctx.createOscillator();
+                  const gain = ctx.createGain();
+                  const startTime = ctx.currentTime + index * 0.08;
+
+                  osc.type = 'triangle';
+                  osc.frequency.setValueAtTime(frequency, startTime);
+                  gain.gain.setValueAtTime(0.001, startTime);
+                  gain.gain.exponentialRampToValueAtTime(0.09, startTime + 0.02);
+                  gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.24);
+
+                  osc.connect(gain);
+                  gain.connect(Howler.masterGain);
+                  osc.start(startTime);
+                  osc.stop(startTime + 0.24);
+            });
+      },
+
+      playAlarm() {
+            if (!Howler.ctx) return;
+            const ctx = Howler.ctx;
+
+            for (let index = 0; index < 2; index += 1) {
+                  const osc = ctx.createOscillator();
+                  const gain = ctx.createGain();
+                  const startTime = ctx.currentTime + index * 0.18;
+
+                  osc.type = 'square';
+                  osc.frequency.setValueAtTime(index % 2 === 0 ? 880 : 660, startTime);
+                  gain.gain.setValueAtTime(0.001, startTime);
+                  gain.gain.exponentialRampToValueAtTime(0.12, startTime + 0.01);
+                  gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.16);
+
+                  osc.connect(gain);
+                  gain.connect(Howler.masterGain);
+                  osc.start(startTime);
+                  osc.stop(startTime + 0.16);
+            }
+      },
+
+      playPrint() {
+            if (!Howler.ctx) return;
+            const ctx = Howler.ctx;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(1200, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(480, ctx.currentTime + 0.12);
+            gain.gain.setValueAtTime(0.08, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+
+            osc.connect(gain);
+            gain.connect(Howler.masterGain);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.12);
+      },
+
+      playDoor() {
+            if (!Howler.ctx) return;
+            const ctx = Howler.ctx;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(180, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(70, ctx.currentTime + 0.22);
+            gain.gain.setValueAtTime(0.07, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+
+            osc.connect(gain);
+            gain.connect(Howler.masterGain);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.22);
+      },
+
+      playSceneEffect(effectKey) {
+            switch (effectKey) {
+                  case 'sfx_alarm':
+                        this.playAlarm();
+                        break;
+                  case 'sfx_glitch':
+                  case 'sfx_funk':
+                        this.playGlitch();
+                        break;
+                  case 'sfx_print':
+                  case 'sfx_print_success':
+                        this.playPrint();
+                        this.activeTimeouts.push(setTimeout(() => this.playSuccess(), 120));
+                        break;
+                  case 'sfx_success':
+                        this.playSuccess();
+                        break;
+                  case 'sfx_door':
+                  case 'sfx_doors_opening':
+                        this.playDoor();
+                        break;
+                  default:
+                        break;
+            }
+      },
+
       // --- BGM TRACK LOOPING ---
       playBGM(url) {
+            const resolvedUrl = AVAILABLE_BGM_TRACKS.has(url) ? url : null;
+
             if (this.bgm) {
                   this.bgm.stop();
                   this.bgm.unload();
+                  this.bgm = null;
             }
+
+            // Scenes without a shipped music asset fall back to the synthesized ambient layers.
+            if (!resolvedUrl) {
+                  return;
+            }
+
             this.bgm = new Howl({
-                  src: [url],
+                  src: [resolvedUrl],
                   loop: true,
                   volume: 0.4,
                   html5: false, // Force Web Audio API for perfect seamless looping

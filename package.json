@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "validate:story-assets": "node scripts/validate-story-assets.cjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

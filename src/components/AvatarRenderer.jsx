@@ -2,29 +2,42 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User } from 'lucide-react';
 
+const PNG_FIRST_AVATARS = new Set([
+      'avatar_f_dark_nature',
+      'avatar_f_dark_tech',
+      'avatar_m_dark_casual',
+      'avatar_m_dark_nature',
+      'avatar_m_dark_rebel',
+      'avatar_m_dark_tech',
+      'avatar_m_light_casual',
+      'avatar_m_light_nature',
+      'avatar_m_light_rebel',
+      'avatar_m_light_tech',
+]);
+
 const AvatarRenderer = ({ options }) => {
       const { gender, skin, style } = options;
 
-      // Construct the expected file name based on the combination of 16 avatars
-      // Example: avatar_m_light_tech.jpg
+      const avatarBaseName = `avatar_${gender}_${skin}_${style}`;
+      const preferredExtension = PNG_FIRST_AVATARS.has(avatarBaseName) ? 'png' : 'jpg';
       const [imgError, setImgError] = useState(false);
-      const [extension, setExtension] = useState('png');
+      const [extension, setExtension] = useState(preferredExtension);
 
-      // Reset error state and try png first when options change
       React.useEffect(() => {
             setImgError(false);
-            setExtension('png');
-      }, [options]);
+            setExtension(preferredExtension);
+      }, [preferredExtension]);
 
       const imgName = `avatar_${gender}_${skin}_${style}.${extension}`;
       const imgPath = `/avatars/${imgName}`;
 
       const handleImgError = () => {
-            if (extension === 'png') {
-                  setExtension('jpg'); // Try JPG if PNG fails
-            } else {
+            if (extension !== preferredExtension) {
                   setImgError(true); // Both failed
+                  return;
             }
+
+            setExtension(preferredExtension === 'png' ? 'jpg' : 'png');
       };
 
       return (

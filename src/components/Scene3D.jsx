@@ -1,18 +1,15 @@
-import React, { useRef, useMemo, useEffect } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import React, { useRef, useMemo } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
-import { EffectComposer, Bloom, Vignette, ChromaticAberration, Noise } from '@react-three/postprocessing';
+import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
 
 // A simple plane that displays the background image with some subtle 3D parallax
-const BackgroundPlane = ({ imageUrl, isGlitching }) => {
+const BackgroundPlane = ({ imageUrl }) => {
       // Create a default white texture to show while loading or if it fails
       const defaultTexture = useMemo(() => new THREE.CanvasTexture(document.createElement('canvas')), []);
-      let url = imageUrl || '';
-      if (!url) url = '/placeholder.jpg'; // We can safely assume placeholder if null
-
-      const texture = useTexture(url, (t) => {
+      const texture = useTexture(imageUrl || '', (t) => {
             t.colorSpace = THREE.SRGBColorSpace;
             t.generateMipmaps = true;
             t.minFilter = THREE.LinearMipMapLinearFilter;
@@ -42,7 +39,7 @@ const BackgroundPlane = ({ imageUrl, isGlitching }) => {
                         <planeGeometry args={[18, 10]} />
                         <meshBasicMaterial 
                               ref={materialRef} 
-                              map={texture || defaultTexture} 
+                              map={imageUrl ? texture : defaultTexture} 
                               transparent={true}
                               toneMapped={false} 
                         />
@@ -90,7 +87,7 @@ const Scene3D = ({ imageUrl, theme }) => {
                         }}
                   >
                         <React.Suspense fallback={null}>
-                              <BackgroundPlane imageUrl={imageUrl} isGlitching={theme === 'glitch'} />
+                              <BackgroundPlane imageUrl={imageUrl} />
                               <PostProcessingEffects theme={theme} />
                         </React.Suspense>
                   </Canvas>

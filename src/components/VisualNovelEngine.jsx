@@ -185,7 +185,7 @@ const VisualNovelEngine = () => {
       // TTS
       useEffect(() => {
             if (!isTtsEnabled || !scene || scene.text === "") return;
-            ElevenLabsService.speak(scene.text, scene.speakerName);
+            ElevenLabsService.speak(scene.text, scene.speakerName, currentSceneId);
       }, [currentSceneId, isTtsEnabled, scene]);
 
       if (!scene) {
@@ -202,7 +202,7 @@ const VisualNovelEngine = () => {
                         setIsTtsEnabled(true);
                         // Optional play on enable:
                         if (scene && scene.text && document.hidden === false) {
-                              ElevenLabsService.speak(scene.text, scene.speakerName);
+                              ElevenLabsService.speak(scene.text, scene.speakerName, currentSceneId);
                         }
                   }
             } else {

@@ -30,10 +30,27 @@ export const ElevenLabsService = {
     window.speechSynthesis.cancel();
   },
 
-  async speak(text, speakerName) {
+  async speak(text, speakerName, sceneId) {
     this.stop();
     if (!text) return;
 
+    // 1. Try local pre-rendered audio first
+    if (sceneId) {
+      const localPath = `/assets/audio/voice/${sceneId}.mp3`;
+      try {
+        const check = await fetch(localPath, { method: 'HEAD' });
+        if (check.ok) {
+          this.currentAudio = new Audio(localPath);
+          this.currentAudio.volume = 0.9;
+          this.currentAudio.play();
+          return;
+        }
+      } catch (e) {
+        console.warn("Local audio check failed", e);
+      }
+    }
+
+    // 2. Try ElevenLabs if Key exists
     if (!this.apiKey) {
       this.speakNative(text);
       return;

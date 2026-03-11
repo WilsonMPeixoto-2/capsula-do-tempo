@@ -9,6 +9,7 @@ import CreatorScreen from '../screens/CreatorScreen';
 // AAA Hooks & Engines
 import { AmbientAudioEngine } from './AudioSystem';
 import Scene3D from './Scene3D';
+import { ElevenLabsService } from '../services/ElevenLabsService';
 
 /* ============================================
    RAIN EFFECT COMPONENT (CSS Animated)
@@ -184,19 +185,35 @@ const VisualNovelEngine = () => {
       // TTS
       useEffect(() => {
             if (!isTtsEnabled || !scene || scene.text === "") return;
-            window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(scene.text);
-            u.lang = 'pt-BR'; u.rate = 0.9;
-            window.speechSynthesis.speak(u);
+            ElevenLabsService.speak(scene.text, scene.speakerName);
       }, [currentSceneId, isTtsEnabled, scene]);
 
       if (!scene) {
             return <div className="text-red-500 font-bold p-10 flex h-screen items-center justify-center bg-black">ERROR: Cena '{currentSceneId}' não encontrada.</div>;
       }
 
+      const handleTtsToggle = () => {
+            if (!isTtsEnabled) {
+                  const hasKey = !!ElevenLabsService.apiKey;
+                  const key = window.prompt("MODO DE VOZ AAA (ElevenLabs)\n\nSe você possui uma API Key da ElevenLabs, insira aqui para ouvir vozes cinematográficas geradas por IA!\n\n(Deixe em branco para usar a voz sintética padrão do navegador)", hasKey ? ElevenLabsService.apiKey : "");
+                  
+                  if (key !== null) {
+                        ElevenLabsService.setApiKey(key.trim());
+                        setIsTtsEnabled(true);
+                        // Optional play on enable:
+                        if (scene && scene.text && document.hidden === false) {
+                              ElevenLabsService.speak(scene.text, scene.speakerName);
+                        }
+                  }
+            } else {
+                  setIsTtsEnabled(false);
+                  ElevenLabsService.stop();
+            }
+      };
+
       const handleChoice = (choice) => {
             AmbientAudioEngine.playClick();
-            window.speechSynthesis.cancel();
+            ElevenLabsService.stop();
             setSceneHistory(prev => [...prev, currentSceneId]);
             if (choice.nextScene === 'title_screen') {
                   setInventory([]);
@@ -417,7 +434,7 @@ const VisualNovelEngine = () => {
                                                 {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
                                                 {isMuted ? 'Som: DESLIGADO' : 'Som: LIGADO'}
                                           </button>
-                                          <button onClick={() => { setIsTtsEnabled(t => !t); setIsMenuOpen(false); }}
+                                          <button onClick={() => { handleTtsToggle(); setIsMenuOpen(false); }}
                                                 className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-all text-lg">
                                                 {isTtsEnabled ? '🔊' : '🔇'} Voz: {isTtsEnabled ? 'ATIVADA' : 'DESATIVADA'}
                                           </button>
@@ -467,7 +484,7 @@ const VisualNovelEngine = () => {
                                     {/* TTS Toggle on Title */}
                                     {currentSceneId === 'title_screen' && (!isTyping || scene.text === "") && (
                                           <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                                                onClick={() => setIsTtsEnabled(!isTtsEnabled)}
+                                                onClick={handleTtsToggle}
                                                 className={`self-center mb-2 px-6 py-3 rounded-full text-lg font-bold transition-all border-2 ${isTtsEnabled ? 'bg-emerald-600 border-emerald-400 text-white' : 'bg-black/60 border-gray-500 text-gray-300 hover:border-white'
                                                       }`}>
                                                 {isTtsEnabled ? '🔊 Acessibilidade: VOZ ATIVADA' : '🔇 Acessibilidade: Ativar Voz'}

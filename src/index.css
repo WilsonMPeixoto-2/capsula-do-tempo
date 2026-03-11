@@ -1,7 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import "tailwindcss";
 /* ============================
    PREMIUM VISUAL ENGINE v2.0
    Studio-quality CSS System

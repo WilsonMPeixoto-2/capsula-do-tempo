@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ShieldAlert, Cpu, HeartHandshake, Eye, Map, Menu, X, Home, RotateCcw, Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import storyData from '../data/storyData.json';
+import { useGame } from '../context/GameContext';
+import AvatarRenderer from './AvatarRenderer';
 
 /* ============================================
    AMBIENT AUDIO SYNTHESIZER ENGINE
@@ -336,6 +338,7 @@ const TypewriterText = ({ text, onComplete }) => {
    MAIN VISUAL NOVEL ENGINE
    ============================================ */
 const VisualNovelEngine = () => {
+      const { avatar } = useGame();
       const [currentSceneId, setCurrentSceneId] = useState('title_screen');
       const [inventory, setInventory] = useState([]);
       const [isTyping, setIsTyping] = useState(true);
@@ -604,6 +607,20 @@ const VisualNovelEngine = () => {
 
                         {/* Audio Player (for actual MP4 files) */}
                         <audio ref={bgMusicRef} loop />
+
+                        {/* ===================== AVATAR HUD ===================== */}
+                        {currentSceneId !== 'title_screen' && (
+                              <motion.div 
+                                    initial={{ opacity: 0, x: -20 }} 
+                                    animate={{ opacity: 1, x: 0 }}
+                                    className="absolute top-4 left-4 z-40 w-24 h-24 md:w-32 md:h-32 glass-panel border border-white/20 rounded-xl overflow-hidden shadow-2xl bg-black/50"
+                              >
+                                    <AvatarRenderer options={avatar} />
+                                    <div className="absolute font-cyber bottom-0 w-full text-center bg-black/80 text-[10px] md:text-xs text-blue-400 py-1 border-t border-white/10 uppercase tracking-widest font-bold">
+                                          NEXO-ID
+                                    </div>
+                              </motion.div>
+                        )}
 
                         {/* ===================== NAVIGATION MENU ===================== */}
                         {currentSceneId !== 'title_screen' && (

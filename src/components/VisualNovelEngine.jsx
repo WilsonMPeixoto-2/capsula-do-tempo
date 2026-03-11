@@ -159,7 +159,7 @@ const VisualNovelEngine = () => {
             }
 
             // Play background music (looping perfectly via Howler)
-            if (scene.bgMusic && scene.bgMusic.includes('Rio_do_Futuro')) {
+            if (scene.bgMusic) {
                   AmbientAudioEngine.playBGM(scene.bgMusic);
             }
 

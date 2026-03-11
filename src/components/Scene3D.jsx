@@ -90,7 +90,7 @@ const Scene3D = ({ imageUrl, theme }) => {
       return (
             <div className="canvas-layer">
                   <Canvas
-                        camera={{ position: [0, 0, 5], fov: 60 }}
+                        camera={{ position: [0, 0, 8], fov: 60 }}
                         gl={{
                               antialias: true,
                               toneMapping: THREE.ACESFilmicToneMapping,

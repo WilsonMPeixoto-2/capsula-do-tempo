@@ -7,7 +7,7 @@ const AvatarRenderer = ({ options }) => {
 
       // Construct the expected file name based on the combination of 16 avatars
       // Example: avatar_m_light_tech.jpg
-      const imgName = `avatar_${gender}_${skin}_${style}.jpg`;
+      const imgName = `avatar_${gender}_${skin}_${style}.png`;
       const imgPath = `/avatars/${imgName}`;
 
       const [imgError, setImgError] = useState(false);

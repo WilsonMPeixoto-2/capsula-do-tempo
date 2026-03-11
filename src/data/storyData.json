@@ -2,7 +2,7 @@
       "title_screen": {
             "speakerName": "",
             "text": "",
-            "bgImage": "/assets/bg_title_screen.jpg",
+            "bgImage": "/assets/bg_title_screen.png",
             "bgMusic": "/assets/audio/Rio_do_Futuro.mp4",
             "npcSprite": "",
             "eventCG": "",
@@ -133,7 +133,7 @@
             "bgImage": "/assets/bg_rua_alagada_neon.png",
             "bgMusic": "/assets/audio/bgm_cyberpunk.mp4",
             "soundEffect": "sfx_door",
-            "npcSprite": "/assets/npc_mentor_sujo.png",
+            "npcSprite": "/assets/npc_cadu_explaining.png",
             "uiTheme": "distopic",
             "choices": [
                   {

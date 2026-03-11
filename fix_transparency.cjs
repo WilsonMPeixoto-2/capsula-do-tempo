@@ -3,13 +3,20 @@ const fs = require('fs');
 const path = require('path');
 
 const assetsDir = './public/assets';
+const avatarsDir = './public/avatars';
 
 async function fixTransparency() {
-    const files = fs.readdirSync(assetsDir).filter(f => f.startsWith('npc_') && f.endsWith('.png'));
-    console.log(`Checking transparency for ${files.length} sprites...`);
+    const assetFiles = fs.readdirSync(assetsDir).filter(f => f.startsWith('npc_') && f.endsWith('.png'));
+    const avatarFiles = fs.readdirSync(avatarsDir).filter(f => f.startsWith('avatar_') && f.endsWith('.png'));
+    
+    const allFiles = [
+        ...assetFiles.map(f => path.join(assetsDir, f)),
+        ...avatarFiles.map(f => path.join(avatarsDir, f))
+    ];
 
-    for (const file of files) {
-        const filePath = path.join(assetsDir, file);
+    console.log(`Checking transparency for ${allFiles.length} sprites...`);
+
+    for (const filePath of allFiles) {
         const tempPath = filePath + '.fixed.png';
         
         try {
@@ -35,9 +42,9 @@ async function fixTransparency() {
 
             fs.unlinkSync(filePath);
             fs.renameSync(tempPath, filePath);
-            console.log(`  FIXED: ${file}`);
+            console.log(`  FIXED: ${path.basename(filePath)}`);
         } catch (err) {
-            console.error(`  ERR on ${file}:`, err);
+            console.error(`  ERR on ${path.basename(filePath)}:`, err);
         }
     }
 }

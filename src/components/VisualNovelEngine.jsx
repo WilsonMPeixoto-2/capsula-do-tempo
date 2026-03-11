@@ -1,231 +1,13 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, Suspense } from 'react';
 import { ShieldAlert, Cpu, HeartHandshake, Eye, Map, Menu, X, Home, RotateCcw, Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import storyData from '../data/storyData.json';
 import { useGame } from '../context/GameContext';
 import AvatarRenderer from './AvatarRenderer';
 
-/* ============================================
-   AMBIENT AUDIO SYNTHESIZER ENGINE
-   Generates all BGM + SFX mathematically
-   ============================================ */
-class AmbientAudioEngine {
-      constructor() {
-            this.ctx = null;
-            this.currentDrone = null;
-            this.noiseNode = null;
-            this.masterGain = null;
-      }
-
-      init() {
-            if (this.ctx) return;
-            const AC = window.AudioContext || window.webkitAudioContext;
-            this.ctx = new AC();
-            this.masterGain = this.ctx.createGain();
-            this.masterGain.gain.value = 0.25;
-            this.masterGain.connect(this.ctx.destination);
-      }
-
-      stopAll() {
-            if (this.currentDrone) {
-                  try { this.currentDrone.forEach(n => { try { n.stop(); } catch (e) { } }); } catch (e) { }
-                  this.currentDrone = null;
-            }
-      }
-
-      // Cyberpunk ambient drone — deep bass + detuned pad
-      playCyberpunkDrone() {
-            this.init(); this.stopAll();
-            const nodes = [];
-            // Deep sub bass
-            const bass = this.ctx.createOscillator();
-            const bassGain = this.ctx.createGain();
-            bass.type = 'triangle'; bass.frequency.value = 40;
-            bassGain.gain.value = 0.3;
-            bass.connect(bassGain); bassGain.connect(this.masterGain);
-            bass.start(); nodes.push(bass);
-            // Eerie pad
-            const pad = this.ctx.createOscillator();
-            const padGain = this.ctx.createGain();
-            pad.type = 'sine'; pad.frequency.value = 110;
-            pad.detune.value = -15;
-            padGain.gain.value = 0.1;
-            pad.connect(padGain); padGain.connect(this.masterGain);
-            pad.start(); nodes.push(pad);
-            // High eerie tone
-            const high = this.ctx.createOscillator();
-            const highGain = this.ctx.createGain();
-            high.type = 'sine'; high.frequency.value = 880;
-            highGain.gain.value = 0.03;
-            high.connect(highGain); highGain.connect(this.masterGain);
-            // Slow LFO on high tone
-            const lfo = this.ctx.createOscillator();
-            const lfoGain = this.ctx.createGain();
-            lfo.type = 'sine'; lfo.frequency.value = 0.3;
-            lfoGain.gain.value = 200;
-            lfo.connect(lfoGain); lfoGain.connect(high.frequency);
-            lfo.start(); high.start();
-            nodes.push(high, lfo);
-            this.currentDrone = nodes;
-      }
-
-      // Tension drone — dissonant and unsettling
-      playTensionDrone() {
-            this.init(); this.stopAll();
-            const nodes = [];
-            const o1 = this.ctx.createOscillator();
-            const g1 = this.ctx.createGain();
-            o1.type = 'sawtooth'; o1.frequency.value = 55;
-            g1.gain.value = 0.12;
-            o1.connect(g1); g1.connect(this.masterGain);
-            o1.start(); nodes.push(o1);
-            // Dissonant second
-            const o2 = this.ctx.createOscillator();
-            const g2 = this.ctx.createGain();
-            o2.type = 'square'; o2.frequency.value = 58.27; // Minor 2nd
-            g2.gain.value = 0.06;
-            o2.connect(g2); g2.connect(this.masterGain);
-            o2.start(); nodes.push(o2);
-            // Rumbling LFO
-            const lfo = this.ctx.createOscillator();
-            const lfoG = this.ctx.createGain();
-            lfo.type = 'sine'; lfo.frequency.value = 0.5;
-            lfoG.gain.value = 0.08;
-            lfo.connect(lfoG); lfoG.connect(this.masterGain);
-            lfo.start(); nodes.push(lfo);
-            this.currentDrone = nodes;
-      }
-
-      // Clean/Utopian ambient — warm and hopeful
-      playCleanDrone() {
-            this.init(); this.stopAll();
-            const nodes = [];
-            // Warm pad
-            const o1 = this.ctx.createOscillator();
-            const g1 = this.ctx.createGain();
-            o1.type = 'sine'; o1.frequency.value = 220;
-            g1.gain.value = 0.08;
-            o1.connect(g1); g1.connect(this.masterGain);
-            o1.start(); nodes.push(o1);
-            // Perfect fifth harmony
-            const o2 = this.ctx.createOscillator();
-            const g2 = this.ctx.createGain();
-            o2.type = 'sine'; o2.frequency.value = 330;
-            g2.gain.value = 0.05;
-            o2.connect(g2); g2.connect(this.masterGain);
-            o2.start(); nodes.push(o2);
-            // Soft shimmer
-            const o3 = this.ctx.createOscillator();
-            const g3 = this.ctx.createGain();
-            o3.type = 'sine'; o3.frequency.value = 660;
-            g3.gain.value = 0.02;
-            o3.connect(g3); g3.connect(this.masterGain);
-            o3.start(); nodes.push(o3);
-            this.currentDrone = nodes;
-      }
-
-      // SFX: Alarm siren
-      playAlarm() {
-            this.init();
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.type = 'square';
-            const now = this.ctx.currentTime;
-            for (let i = 0; i < 8; i++) {
-                  osc.frequency.setValueAtTime(800, now + i * 0.25);
-                  osc.frequency.setValueAtTime(400, now + i * 0.25 + 0.125);
-            }
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.linearRampToValueAtTime(0.01, now + 2);
-            osc.connect(gain); gain.connect(this.masterGain);
-            osc.start(now); osc.stop(now + 2);
-      }
-
-      // SFX: Door opening (hydraulic)
-      playDoor() {
-            this.init();
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            const now = this.ctx.currentTime;
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(60, now);
-            osc.frequency.linearRampToValueAtTime(15, now + 1.2);
-            gain.gain.setValueAtTime(0.35, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
-            osc.connect(gain); gain.connect(this.masterGain);
-            osc.start(now); osc.stop(now + 1.2);
-      }
-
-      // SFX: Success chime
-      playSuccess() {
-            this.init();
-            const now = this.ctx.currentTime;
-            [523, 659, 784, 1047].forEach((freq, i) => {
-                  const osc = this.ctx.createOscillator();
-                  const gain = this.ctx.createGain();
-                  osc.type = 'sine';
-                  osc.frequency.value = freq;
-                  gain.gain.setValueAtTime(0.15, now + i * 0.15);
-                  gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.15 + 0.4);
-                  osc.connect(gain); gain.connect(this.masterGain);
-                  osc.start(now + i * 0.15);
-                  osc.stop(now + i * 0.15 + 0.4);
-            });
-      }
-
-      // SFX: Glitch distortion
-      playGlitch() {
-            this.init();
-            const now = this.ctx.currentTime;
-            for (let i = 0; i < 6; i++) {
-                  const osc = this.ctx.createOscillator();
-                  const gain = this.ctx.createGain();
-                  osc.type = 'sawtooth';
-                  osc.frequency.value = 100 + Math.random() * 800;
-                  gain.gain.setValueAtTime(0.15, now + i * 0.08);
-                  gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.08 + 0.06);
-                  osc.connect(gain); gain.connect(this.masterGain);
-                  osc.start(now + i * 0.08);
-                  osc.stop(now + i * 0.08 + 0.06);
-            }
-      }
-
-      // SFX: 3D Printer
-      playPrint() {
-            this.init();
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            const now = this.ctx.currentTime;
-            osc.type = 'square';
-            [400, 600, 400, 800, 500, 700].forEach((f, i) => osc.frequency.setValueAtTime(f, now + i * 0.08));
-            gain.gain.setValueAtTime(0.12, now);
-            gain.gain.linearRampToValueAtTime(0.01, now + 0.5);
-            osc.connect(gain); gain.connect(this.masterGain);
-            osc.start(now); osc.stop(now + 0.5);
-      }
-
-      // SFX: Funk blare (broken radio)
-      playFunk() {
-            this.init();
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            const now = this.ctx.currentTime;
-            osc.type = 'sawtooth';
-            for (let i = 0; i < 10; i++) {
-                  osc.frequency.setValueAtTime(150 + Math.random() * 200, now + i * 0.1);
-            }
-            gain.gain.setValueAtTime(0.4, now);
-            gain.gain.linearRampToValueAtTime(0.01, now + 1.0);
-            osc.connect(gain); gain.connect(this.masterGain);
-            osc.start(now); osc.stop(now + 1.0);
-      }
-
-      setVolume(v) {
-            if (this.masterGain) this.masterGain.gain.value = v;
-      }
-}
-
-const audioEngine = new AmbientAudioEngine();
+// AAA Hooks & Engines
+import { AmbientAudioEngine } from './AudioSystem';
+import Scene3D from './Scene3D';
 
 /* ============================================
    RAIN EFFECT COMPONENT (CSS Animated)
@@ -366,44 +148,32 @@ const VisualNovelEngine = () => {
 
       // AMBIENT AUDIO ENGINE — plays drones based on theme
       useEffect(() => {
-            if (!scene || isMuted) { audioEngine.stopAll(); return; }
+            AmbientAudioEngine.init();
+
+            if (!scene || isMuted) {
+                  AmbientAudioEngine.stopAll();
+                  if (bgMusicRef.current) bgMusicRef.current.pause();
+                  return;
+            }
+
+            // Play background music (looping perfectly via Howler)
+            if (scene.bgMusic && scene.bgMusic.includes('Rio_do_Futuro')) {
+                  AmbientAudioEngine.playBGM(scene.bgMusic);
+            }
 
             // Determine which ambient drone to play
             const theme = scene.uiTheme || 'clean';
             let droneKey = theme;
 
             // Don't restart the same drone
-            if (droneKey === lastDroneRef.current) {
-                  // But still play SFX
-            } else {
+            if (droneKey !== lastDroneRef.current) {
                   lastDroneRef.current = droneKey;
                   switch (theme) {
-                        case 'glitch': audioEngine.playTensionDrone(); break;
-                        case 'distopic': audioEngine.playCyberpunkDrone(); break;
-                        case 'cyber': audioEngine.playCyberpunkDrone(); break;
-                        case 'clean': audioEngine.playCleanDrone(); break;
-                        default: audioEngine.playCleanDrone();
-                  }
-            }
-
-            // SFX based on soundEffect string
-            if (scene.soundEffect) {
-                  const sfx = scene.soundEffect.toLowerCase();
-                  if (sfx.includes('alarm')) audioEngine.playAlarm();
-                  else if (sfx.includes('door') || sfx.includes('bag')) audioEngine.playDoor();
-                  else if (sfx.includes('success') || sfx.includes('clean')) audioEngine.playSuccess();
-                  else if (sfx.includes('print')) audioEngine.playPrint();
-                  else if (sfx.includes('funk')) audioEngine.playFunk();
-                  else if (sfx.includes('glitch')) audioEngine.playGlitch();
-                  else if (sfx.includes('power') || sfx.includes('shock')) audioEngine.playDoor();
-            }
-
-            // Play Rio_do_Futuro.mp4 if scene references the actual file
-            if (scene.bgMusic && scene.bgMusic.includes('Rio_do_Futuro') && bgMusicRef.current) {
-                  if (bgMusicRef.current.src !== window.location.origin + scene.bgMusic) {
-                        bgMusicRef.current.src = scene.bgMusic;
-                        bgMusicRef.current.volume = 0.3;
-                        bgMusicRef.current.play().catch(() => { });
+                        case 'glitch': AmbientAudioEngine.playTensionDrone(); break;
+                        case 'distopic': AmbientAudioEngine.playCyberpunkDrone(); break;
+                        case 'cyber': AmbientAudioEngine.playCyberpunkDrone(); break;
+                        case 'clean': AmbientAudioEngine.playCleanDrone(); break;
+                        default: AmbientAudioEngine.playCleanDrone();
                   }
             }
 
@@ -424,6 +194,7 @@ const VisualNovelEngine = () => {
       }
 
       const handleChoice = (choice) => {
+            AmbientAudioEngine.playClick();
             window.speechSynthesis.cancel();
             setSceneHistory(prev => [...prev, currentSceneId]);
             if (choice.nextScene === 'title_screen') {
@@ -446,7 +217,7 @@ const VisualNovelEngine = () => {
       };
 
       const goHome = () => {
-            audioEngine.stopAll();
+            AmbientAudioEngine.stopAll();
             lastDroneRef.current = '';
             setCurrentSceneId('title_screen');
             setInventory([]);
@@ -456,7 +227,7 @@ const VisualNovelEngine = () => {
 
       const toggleMute = () => {
             setIsMuted(m => {
-                  if (!m) { audioEngine.stopAll(); if (bgMusicRef.current) bgMusicRef.current.pause(); }
+                  if (!m) { AmbientAudioEngine.stopAll(); }
                   else { lastDroneRef.current = ''; }
                   return !m;
             });
@@ -541,45 +312,21 @@ const VisualNovelEngine = () => {
                         style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
                         animate={shakeAnimation}
                   >
-                        {/* Background */}
-                        <AnimatePresence mode="wait">
-                              <motion.div
-                                    key={scene.eventCG || scene.bgImage}
-                                    initial={{ opacity: 0, scale: 1.02 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 1.2, ease: 'easeOut' }}
-                                    className="absolute inset-0"
-                                    style={{ willChange: 'opacity, transform' }}
-                              >
-                                    <img
-                                          src={scene.eventCG || scene.bgImage}
-                                          alt=""
-                                          className="w-full h-full"
-                                          style={{
-                                                objectFit: 'cover',
-                                                objectPosition: 'center center',
-                                                transform: 'translateZ(0)',
-                                                backfaceVisibility: 'hidden',
-                                                filter: colorFilter,
-                                                imageRendering: 'high-quality'
-                                          }}
-                                    />
-                              </motion.div>
-                        </AnimatePresence>
+                        {/* Advanced 3D Render Canvas replaces flat background image */}
+                        <div className="absolute inset-0 pointer-events-none">
+                              {scene.eventCG || scene.bgImage ? (
+                                    <Suspense fallback={<div className="bg-black w-full h-full" />}>
+                                          <Scene3D imageUrl={scene.eventCG || scene.bgImage} theme={scene.uiTheme} />
+                                    </Suspense>
+                              ) : (
+                                    <div className="bg-black w-full h-full" />
+                              )}
+                        </div>
 
-                        {/* Weather Effects */}
+                        {/* Weather Effects Layered Above 3D Background */}
                         {showRain && <RainEffect />}
                         {showLightning && <LightningFlash />}
                         <FloatingParticles theme={scene.uiTheme || 'clean'} />
-
-                        {/* Atmospheric Tint */}
-                        {!scene.eventCG && (
-                              <div className={`absolute inset-0 pointer-events-none transition-colors duration-1000 ${scene.uiTheme === 'glitch' ? 'bg-red-950/20' :
-                                    scene.uiTheme === 'distopic' ? 'bg-emerald-950/30' :
-                                          scene.uiTheme === 'cyber' ? 'bg-fuchsia-950/20' : 'bg-transparent'
-                                    }`} />
-                        )}
 
                         {/* Bottom Gradient */}
                         <div className="absolute bottom-0 w-full h-[60vh] bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none z-0" />
@@ -717,12 +464,13 @@ const VisualNovelEngine = () => {
                                                 animate={{ opacity: 1, x: 0 }}
                                                 exit={{ opacity: 0, scale: 0.95 }}
                                                 transition={{ delay: idx * 0.1, duration: 0.3 }}
-                                                whileHover={{ scale: 1.01, x: 10, boxShadow: "0px 0px 20px rgba(255,255,255,0.15)" }}
-                                                whileTap={{ scale: 0.98 }}
+                                                whileHover={{ scale: 1.02, x: 15, boxShadow: "0px 0px 30px oklch(100% 0 0 / 0.3)" }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onMouseEnter={() => AmbientAudioEngine.playHover()}
                                                 onClick={() => handleChoice(choice)}
                                                 className={`text-left px-6 py-5 rounded-xl btn-premium ${btnGlow} font-semibold text-xl md:text-2xl focus:outline-none flex items-center gap-4 ${idx === selectedChoiceIdx ? 'arcade-selected' : ''}`}
                                           >
-                                                <span className={`w-2.5 h-2.5 rounded-full ${dotColor} shadow-lg`} />
+                                                <span className={`w-3 h-3 rounded-full ${dotColor} shadow-[0_0_15px_currentColor]`} />
                                                 {choice.label}
                                           </motion.button>
                                     ))}

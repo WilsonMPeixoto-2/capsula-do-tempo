@@ -15,7 +15,9 @@ const BackgroundPlane = ({ imageUrl, isGlitching }) => {
       const texture = useTexture(url, (t) => {
             t.colorSpace = THREE.SRGBColorSpace;
             t.generateMipmaps = true;
-            t.minFilter = THREE.LinearMipmapLinearFilter;
+            t.minFilter = THREE.LinearMipMapLinearFilter;
+            t.magFilter = THREE.LinearFilter;
+            t.anisotropy = 16;
       });
 
       const materialRef = useRef();
@@ -35,11 +37,13 @@ const BackgroundPlane = ({ imageUrl, isGlitching }) => {
 
       return (
             <group ref={groupRef}>
-                  <mesh position={[0, 0, -2]}>
-                        <planeGeometry args={[16, 9]} />
+                   {/* We scale the plane relative to the distance to fill the FOV height (tan(30) * 8 * 2 = 9.23) */}
+                  <mesh position={[0, 0, -1]}>
+                        <planeGeometry args={[18, 10]} />
                         <meshBasicMaterial 
                               ref={materialRef} 
                               map={texture || defaultTexture} 
+                              transparent={true}
                               toneMapped={false} 
                         />
                   </mesh>
@@ -53,32 +57,19 @@ const PostProcessingEffects = ({ theme }) => {
       
       return (
             <EffectComposer disableNormalPass>
-                  {/* Master Bloom for OLED intensity */}
+                  {/* Master Bloom for OLED intensity - lowered to prevent washout */}
                   <Bloom 
-                        intensity={isCyber ? 1.5 : (isGlitch ? 1.2 : 0.8)} 
-                        luminanceThreshold={0.4} 
+                        intensity={isCyber ? 1.0 : (isGlitch ? 0.8 : 0.4)} 
+                        luminanceThreshold={0.5} 
                         luminanceSmoothing={0.9} 
                         blendFunction={BlendFunction.SCREEN} 
                         mipmapBlur 
                   />
-                  {/* Cyberpunk/Glitch Aberration */}
-                  {isGlitch && (
-                        <ChromaticAberration 
-                              blendFunction={BlendFunction.NORMAL} 
-                              offset={[0.005, 0.005]} 
-                        />
-                  )}
-                  {/* Film Grain */}
-                  <Noise 
-                        premultiply 
-                        blendFunction={BlendFunction.ADD} 
-                        opacity={isGlitch ? 0.3 : 0.15} 
-                  />
-                  {/* Cinematic Vignette */}
+                  {/* Cinematic Vignette - Much subtler to maintain original image brightness */}
                   <Vignette 
                         eskil={false} 
-                        offset={0.1} 
-                        darkness={1.5} 
+                        offset={0.3} 
+                        darkness={0.6} 
                         blendFunction={BlendFunction.MULTIPLY} 
                   />
             </EffectComposer>
@@ -90,11 +81,10 @@ const Scene3D = ({ imageUrl, theme }) => {
       return (
             <div className="canvas-layer">
                   <Canvas
-                        camera={{ position: [0, 0, 8], fov: 60 }}
+                        camera={{ position: [0, 0, 7], fov: 60 }}
                         gl={{
                               antialias: true,
-                              toneMapping: THREE.ACESFilmicToneMapping,
-                              toneMappingExposure: 1.2,
+                              toneMapping: THREE.NoToneMapping,
                               outputColorSpace: THREE.SRGBColorSpace,
                               powerPreference: 'high-performance'
                         }}

@@ -55,26 +55,26 @@
       "intro_02": {
             "speakerName": "SISTEMA DA NAVE",
             "text": "Antes de abrirmos as janelas de observação e olhar para fora, precisamos confirmar a sua identidade. Qual será a sua habilidade técnica no futuro?",
-            "bgImage": "/assets/bg_capsula_limpa.jpg",
+            "bgImage": "/assets/bg_capsula_limpa.png",
             "uiTheme": "clean",
             "choices": [
                   {
-                        "label": "Hacker Digital (Especialista em invasão e inteligência de dados)",
+                        "label": "Operador Nexus (Especialista em invasão e inteligência)",
                         "nextScene": "intro_03",
                         "gainItem": "trait_hacker"
                   },
                   {
-                        "label": "Engenheiro Espacial (Construtor de robôs e estruturas de ferro)",
+                        "label": "Mecânico Nuclear (Mestre em máquinas e exoestruturas)",
                         "nextScene": "intro_03",
                         "gainItem": "trait_engineer"
                   },
                   {
-                        "label": "Negociador Mestre (Líder treinado com táticas calmas para conversar com líderes)",
+                        "label": "Líder Diplomata (Estrategista em persuasão e acordos)",
                         "nextScene": "intro_03",
                         "gainItem": "trait_diplomat"
                   },
                   {
-                        "label": "Biólogo da Natureza (Inteligência para recuperar plantas e limpar a cidade)",
+                        "label": "Bio-Guardião (Expert em recuperação botânica e climática)",
                         "nextScene": "intro_03",
                         "gainItem": "trait_bio"
                   }
@@ -96,7 +96,7 @@
       "the_glitch": {
             "speakerName": "ALERTA MÁXIMO",
             "text": "CÓDIGO DE ERRO VERMELHO! O TEMPO PAROU DE RESPONDER! O núcleo de proteção quebrou em pedacinhos. Preparem-se rápido para a queda de emergência!",
-            "bgImage": "/assets/bg_glitch_screen.jpg",
+            "bgImage": "/assets/bg_glitch_screen.png",
             "bgMusic": "/assets/audio/bgm_tension.mp4",
             "soundEffect": "sfx_alarm",
             "uiTheme": "glitch",
@@ -114,7 +114,7 @@
       "reveal_bay_01": {
             "speakerName": "SISTEMA DA NAVE",
             "text": "Voltando a ligar a sua visão... Nós caímos. Local: Baía de Guanabara, Rio de Janeiro. Ano: 2050. Mas o lugar inteiro parece um cenário de destruição gigante abandonado.",
-            "bgImage": "/assets/bg_baia_distopica.jpg",
+            "bgImage": "/assets/bg_baia_distopica.png",
             "bgMusic": "/assets/audio/bgm_tension.mp4",
             "soundEffect": "sfx_glitch",
             "npcSprite": "",

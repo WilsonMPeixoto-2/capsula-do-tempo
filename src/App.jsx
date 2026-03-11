@@ -1,5 +1,4 @@
 import React from 'react';
-import React from 'react';
 import VisualNovelEngine from './components/VisualNovelEngine';
 import { GameProvider } from './context/GameContext';
 

@@ -4,8 +4,8 @@ import { useGame } from '../context/GameContext';
 import AvatarRenderer from '../components/AvatarRenderer';
 import { Palette, Layers, UserCircle, Sparkles, ChevronRight } from 'lucide-react';
 
-const AvatarCreatorScreen = () => {
-      const { avatar, updateAvatar, navigateScreen } = useGame();
+const AvatarCreatorScreen = ({ onComplete }) => {
+      const { avatar, updateAvatar } = useGame();
 
       // Tabs: 'gender', 'skin', 'style'
       const [activeTab, setActiveTab] = useState('gender');
@@ -44,7 +44,7 @@ const AvatarCreatorScreen = () => {
 
       const nextPhase = () => {
             playClick();
-            navigateScreen('story');
+            if (onComplete) onComplete();
       };
 
       const tabs = [

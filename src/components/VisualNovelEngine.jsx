@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import storyData from '../data/storyData.json';
 import { useGame } from '../context/GameContext';
 import AvatarRenderer from './AvatarRenderer';
+import CreatorScreen from '../screens/CreatorScreen';
 
 // AAA Hooks & Engines
 import { AmbientAudioEngine } from './AudioSystem';
@@ -343,7 +344,7 @@ const VisualNovelEngine = () => {
                                                 opacity: { duration: 0.6, ease: 'backOut' },
                                                 y: { duration: 4, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut', delay: 0.6 }
                                           }}
-                                          className="absolute bottom-6 left-1/2 transform -translate-x-1/2 md:translate-x-0 md:left-[10%] max-w-sm pointer-events-none z-0"
+                                          className="absolute bottom-6 left-1/2 transform -translate-x-1/2 md:translate-x-0 md:left-[10%] max-w-sm pointer-events-none z-10"
                                     >
                                           <img src={scene.npcSprite} alt={scene.speakerName}
                                                 className="h-[75vh] object-contain drop-shadow-[0_0_25px_rgba(0,0,0,0.9)]"
@@ -355,8 +356,23 @@ const VisualNovelEngine = () => {
                         {/* Audio Player (for actual MP4 files) */}
                         <audio ref={bgMusicRef} loop />
 
+                        {/* ===================== CREATOR OVERLAY ===================== */}
+                        <AnimatePresence>
+                              {scene.isCreator && (
+                                    <motion.div 
+                                          initial={{ opacity: 0 }}
+                                          animate={{ opacity: 1 }}
+                                          exit={{ opacity: 0, scale: 1.05 }}
+                                          transition={{ duration: 0.8 }}
+                                          className="absolute z-[100] inset-0 w-full h-full bg-black/80 backdrop-blur-3xl overflow-y-auto"
+                                    >
+                                          <CreatorScreen onComplete={() => handleChoice(scene.choices[0])} />
+                                    </motion.div>
+                              )}
+                        </AnimatePresence>
+
                         {/* ===================== AVATAR HUD ===================== */}
-                        {currentSceneId !== 'title_screen' && (
+                        {!scene.isCreator && currentSceneId !== 'title_screen' && (
                               <motion.div 
                                     initial={{ opacity: 0, x: -20 }} 
                                     animate={{ opacity: 1, x: 0 }}
@@ -370,7 +386,7 @@ const VisualNovelEngine = () => {
                         )}
 
                         {/* ===================== NAVIGATION MENU ===================== */}
-                        {currentSceneId !== 'title_screen' && (
+                        {!scene.isCreator && currentSceneId !== 'title_screen' && (
                               <motion.button
                                     initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                                     onClick={() => setIsMenuOpen(m => !m)}
@@ -410,7 +426,7 @@ const VisualNovelEngine = () => {
                         </AnimatePresence>
 
                         {/* ===================== DIALOGUE BOX ===================== */}
-                        {scene.text !== "" && (
+                        {!scene.isCreator && scene.text !== "" && (
                               <motion.div
                                     key={scene.speakerName + currentSceneId}
                                     initial={{ y: 50, opacity: 0 }}
@@ -446,36 +462,38 @@ const VisualNovelEngine = () => {
                         )}
 
                         {/* ===================== CHOICE BUTTONS ===================== */}
-                        <div className={`relative z-20 w-full max-w-6xl mx-auto px-6 md:px-10 pb-10 mt-6 flex flex-col gap-3 transition-opacity duration-500 ${!isTyping || scene.text === "" ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                              {/* TTS Toggle on Title */}
-                              {currentSceneId === 'title_screen' && (!isTyping || scene.text === "") && (
-                                    <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                                          onClick={() => setIsTtsEnabled(!isTtsEnabled)}
-                                          className={`self-center mb-2 px-6 py-3 rounded-full text-lg font-bold transition-all border-2 ${isTtsEnabled ? 'bg-emerald-600 border-emerald-400 text-white' : 'bg-black/60 border-gray-500 text-gray-300 hover:border-white'
-                                                }`}>
-                                          {isTtsEnabled ? '🔊 Acessibilidade: VOZ ATIVADA' : '🔇 Acessibilidade: Ativar Voz'}
-                                    </motion.button>
-                              )}
-                              <AnimatePresence>
-                                    {(!isTyping || scene.text === "") && availableChoices.map((choice, idx) => (
-                                          <motion.button
-                                                key={idx}
-                                                initial={{ opacity: 0, x: -20 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                exit={{ opacity: 0, scale: 0.95 }}
-                                                transition={{ delay: idx * 0.1, duration: 0.3 }}
-                                                whileHover={{ scale: 1.02, x: 15, boxShadow: "0px 0px 30px oklch(100% 0 0 / 0.3)" }}
-                                                whileTap={{ scale: 0.95 }}
-                                                onMouseEnter={() => AmbientAudioEngine.playHover()}
-                                                onClick={() => handleChoice(choice)}
-                                                className={`text-left px-6 py-5 rounded-xl btn-premium ${btnGlow} font-semibold text-xl md:text-2xl focus:outline-none flex items-center gap-4 ${idx === selectedChoiceIdx ? 'arcade-selected' : ''}`}
-                                          >
-                                                <span className={`w-3 h-3 rounded-full ${dotColor} shadow-[0_0_15px_currentColor]`} />
-                                                {choice.label}
+                        {!scene.isCreator && (
+                              <div className={`relative z-20 w-full max-w-6xl mx-auto px-6 md:px-10 pb-10 mt-6 flex flex-col gap-3 transition-opacity duration-500 ${!isTyping || scene.text === "" ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                                    {/* TTS Toggle on Title */}
+                                    {currentSceneId === 'title_screen' && (!isTyping || scene.text === "") && (
+                                          <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                                                onClick={() => setIsTtsEnabled(!isTtsEnabled)}
+                                                className={`self-center mb-2 px-6 py-3 rounded-full text-lg font-bold transition-all border-2 ${isTtsEnabled ? 'bg-emerald-600 border-emerald-400 text-white' : 'bg-black/60 border-gray-500 text-gray-300 hover:border-white'
+                                                      }`}>
+                                                {isTtsEnabled ? '🔊 Acessibilidade: VOZ ATIVADA' : '🔇 Acessibilidade: Ativar Voz'}
                                           </motion.button>
-                                    ))}
-                              </AnimatePresence>
-                        </div>
+                                    )}
+                                    <AnimatePresence>
+                                          {(!isTyping || scene.text === "") && availableChoices.map((choice, idx) => (
+                                                <motion.button
+                                                      key={idx}
+                                                      initial={{ opacity: 0, x: -20 }}
+                                                      animate={{ opacity: 1, x: 0 }}
+                                                      exit={{ opacity: 0, scale: 0.95 }}
+                                                      transition={{ delay: idx * 0.1, duration: 0.3 }}
+                                                      whileHover={{ scale: 1.02, x: 15, boxShadow: "0px 0px 30px oklch(100% 0 0 / 0.3)" }}
+                                                      whileTap={{ scale: 0.95 }}
+                                                      onMouseEnter={() => AmbientAudioEngine.playHover()}
+                                                      onClick={() => handleChoice(choice)}
+                                                      className={`text-left px-6 py-5 rounded-xl btn-premium ${btnGlow} font-semibold text-xl md:text-2xl focus:outline-none flex items-center gap-4 ${idx === selectedChoiceIdx ? 'arcade-selected' : ''}`}
+                                                >
+                                                      <span className={`w-3 h-3 rounded-full ${dotColor} shadow-[0_0_15px_currentColor]`} />
+                                                      {choice.label}
+                                                </motion.button>
+                                          ))}
+                                    </AnimatePresence>
+                              </div>
+                        )}
 
                   </motion.div>
             </div>

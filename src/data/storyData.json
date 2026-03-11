@@ -9,29 +9,37 @@
             "uiTheme": "clean",
             "choices": [
                   {
-                        "label": "INICIAR CÁPSULA DO TEMPO",
-                        "nextScene": "intro_01"
+                        "label": "INICIAR MISSÃO DO FUTURO",
+                        "nextScene": "intro_creator"
                   }
+            ]
+      },
+      "intro_creator": {
+            "speakerName": "G.E.T. MÓVEL",
+            "text": "Forje sua identidade holográfica antes de continuarmos para a linha do tempo futura.",
+            "isCreator": true,
+            "choices": [
+                  { "label": "[AVANÇAR]", "nextScene": "intro_01" }
             ]
       },
       "dystopia_02_solution_kit": {
             "speakerName": "G.E.T. MÓVEL",
-            "text": "Módulos de Limpeza de Água e Drenagem Conectados. Cadu sorri com os dentes sujos enquanto a água da rua começa a vazar para os esgotos destravados.",
-            "bgImage": "/assets/bg_rua_alagada_neon.jpg",
+            "text": "Ferramentas Avançadas conectadas com sucesso! Cadu respira aliviado enquanto a magia técnica começa a esvaziar a água da rua inundada.",
+            "bgImage": "/assets/bg_rua_alagada_neon.png",
             "soundEffect": "sfx_doors_opening",
             "npcSprite": "/assets/npc_mentor_sujo.png",
             "eventCG": "",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "Injetar os módulos na IA de segurança!",
+                        "label": "Usar os Módulos para destravar a sala principal!",
                         "nextScene": "utopia_01"
                   }
             ]
       },
       "intro_01": {
-            "speakerName": "G.E.T. MÓVEL",
-            "text": "Iniciando simulação. Bem-vindo à Cápsula do Tempo. Ano de destino: 2050. Status da cidade do Rio de Janeiro: INSTÁVEL. Condições climáticas: ADVERSAS.",
+            "speakerName": "SISTEMA DA NAVE",
+            "text": "Simulação do tempo ativada. Bem-vindo à viagem! Destino programado: Rio de Janeiro, ano de 2050. Aviso importante: A cidade apresenta defeitos visuais e clima caótico.",
             "bgImage": "/assets/bg_capsula_limpa.jpg",
             "bgMusic": "/assets/audio/bgm_clean.mp4",
             "npcSprite": "",
@@ -39,137 +47,139 @@
             "uiTheme": "clean",
             "choices": [
                   {
-                        "label": "⚠️ INICIAR PROTOCOLO DE IMERSÃO 🔴",
+                        "label": "⚠️ INICIAR VIAGEM NO TEMPO 🔴",
                         "nextScene": "intro_02"
                   }
             ]
       },
       "intro_02": {
-            "speakerName": "G.E.T. MÓVEL",
-            "text": "Antes de abrirmos as comportas visuais, precisamos calibrar sua interface neural. Que tipo de especialização você traz para o futuro?",
+            "speakerName": "SISTEMA DA NAVE",
+            "text": "Antes de abrirmos as janelas de observação e olhar para fora, precisamos confirmar a sua identidade. Qual será a sua habilidade técnica no futuro?",
             "bgImage": "/assets/bg_capsula_limpa.jpg",
             "uiTheme": "clean",
             "choices": [
                   {
-                        "label": "Overclocking Cognitivo (Análise de dados extrema e hacking)",
+                        "label": "Hacker Digital (Especialista em invasão e inteligência de dados)",
                         "nextScene": "intro_03",
                         "gainItem": "trait_hacker"
                   },
                   {
-                        "label": "Engenharia de Malha Urbana (Arquitetura de sistemas e infraestrutura)",
+                        "label": "Engenheiro Espacial (Construtor de robôs e estruturas de ferro)",
                         "nextScene": "intro_03",
                         "gainItem": "trait_engineer"
                   },
                   {
-                        "label": "Calibração Psicológica (Negociação e empatia diplomática)",
+                        "label": "Negociador Mestre (Líder treinado com táticas calmas para conversar com líderes)",
                         "nextScene": "intro_03",
                         "gainItem": "trait_diplomat"
                   },
                   {
-                        "label": "Bio-Restauração (Genética, botânica e conservação avançada)",
+                        "label": "Biólogo da Natureza (Inteligência para recuperar plantas e limpar a cidade)",
                         "nextScene": "intro_03",
                         "gainItem": "trait_bio"
                   }
             ]
       },
       "intro_03": {
-            "speakerName": "G.E.T. MÓVEL",
-            "text": "Perfil registrado. Preparando renderização do Rio de Janeiro Utópico. Abrindo painéis de observação em 3... 2... 1...",
+            "speakerName": "SISTEMA DA NAVE",
+            "text": "Identidade confirmada! Preparando a sua chegada ao Rio de Janeiro do futuro. Abrindo visão de segurança em 3... 2... 1...",
             "bgImage": "/assets/bg_capsula_limpa.jpg",
+            "soundEffect": "sfx_door",
             "uiTheme": "clean",
             "choices": [
                   {
-                        "label": "Olhar pela janela.",
+                        "label": "Olhar pela janela principal da nave.",
                         "nextScene": "the_glitch"
                   }
             ]
       },
       "the_glitch": {
-            "speakerName": "ALERTA DO SISTEMA",
-            "text": "ERRO CRÍTICO. DESINCRONIZAÇÃO TEMPORAL DETECTADA. O MÓDULO DOS SONHOS ENTROU EM COLAPSO. INICIANDO EJEÇÃO DE EMERGÊNCIA.",
+            "speakerName": "ALERTA MÁXIMO",
+            "text": "CÓDIGO DE ERRO VERMELHO! O TEMPO PAROU DE RESPONDER! O núcleo de proteção quebrou em pedacinhos. Preparem-se rápido para a queda de emergência!",
             "bgImage": "/assets/bg_glitch_screen.jpg",
             "bgMusic": "/assets/audio/bgm_tension.mp4",
-            "soundEffect": "/assets/audio/sfx_alarm.mp4",
+            "soundEffect": "sfx_alarm",
             "uiTheme": "glitch",
             "choices": [
                   {
-                        "label": "⚠️ Tentar forçar o reinício do painel!",
+                        "label": "⚠️ Bater as mãos no painel de voo tentando ajudar!",
                         "nextScene": "reveal_bay_01"
                   },
                   {
-                        "label": "⚠️ Segurar firme e esperar o impacto!",
+                        "label": "⚠️ Segurar firme na cadeira e aguentar o impacto!",
                         "nextScene": "reveal_bay_01"
                   }
             ]
       },
       "reveal_bay_01": {
-            "speakerName": "G.E.T. MÓVEL",
-            "text": "Re-sincronizando visão. Baía de Guanabara detectada. Status da cidade do Rio de Janeiro: INSTÁVEL. Condições climáticas: ADVERSAS. Ano de destino: 2050.",
+            "speakerName": "SISTEMA DA NAVE",
+            "text": "Voltando a ligar a sua visão... Nós caímos. Local: Baía de Guanabara, Rio de Janeiro. Ano: 2050. Mas o lugar inteiro parece um cenário de destruição gigante abandonado.",
             "bgImage": "/assets/bg_baia_distopica.jpg",
             "bgMusic": "/assets/audio/bgm_tension.mp4",
-            "soundEffect": "sfx_doors_opening",
+            "soundEffect": "sfx_glitch",
             "npcSprite": "",
             "eventCG": "",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "⚠️ Tentar abrir as comportas manuais.",
+                        "label": "⚠️ Forçar a porta de saída antes que afunde.",
                         "nextScene": "dystopia_01"
                   }
             ]
       },
       "dystopia_01": {
-            "speakerName": "Cadu (Resistência)",
-            "text": "Ei! Ei, cadete da cápsula! Acorda. O sistema fritou e a água da Baía de Guanabara tá subindo pro nível da rua. Você precisa levantar agora.",
-            "bgImage": "/assets/bg_rua_alagada_neon.jpg",
+            "speakerName": "Cadu (Jovem Sobrevivente)",
+            "text": "Ei! Você dentro do metal voador, acorda! O mundo deu problema feio e a água da montanha já está cobrindo a rua! A gente precisa fugir daqui em menos de um minuto!",
+            "bgImage": "/assets/bg_rua_alagada_neon.png",
             "bgMusic": "/assets/audio/bgm_cyberpunk.mp4",
-            "soundEffect": "sfx_doors_opening",
+            "soundEffect": "sfx_door",
             "npcSprite": "/assets/npc_mentor_sujo.png",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "Fugir para o Colaboratório!",
+                        "label": "Certo! Me mostra para onde nós vamos nos esconder!",
                         "nextScene": "Colaboratório_01"
                   }
             ]
       },
       "Colaboratório_01": {
             "speakerName": "Cadu",
-            "text": "Conseguimos chegar ao esconderijo. O Módulo dos Sonhos da SME explodiu e levou o Rio inteiro junto para o buraco temporal. As coisas estão feias lá fora.",
-            "bgImage": "/assets/bg_safehouse_bunker.jpg",
+            "text": "Chegamos no laboratório secreto. Foi por muito pouco! A cápsula mestre estourou e todo o sistema elétrico da cidade caiu na água. Está o maior caos cibernético do lado de fora.",
+            "bgImage": "/assets/bg_safehouse_bunker.png",
+            "soundEffect": "sfx_success",
             "npcSprite": "/assets/npc_cadu_explaining.png",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "Como a gente conserta a linha do tempo e religa a simulação?",
+                        "label": "Como nós consertamos o relógio que quebrou e ligamos as luzes?",
                         "nextScene": "Colaboratório_02"
                   }
             ]
       },
       "Colaboratório_02": {
             "speakerName": "Mila (Operadora de Rádio)",
-            "text": "Bem-vindo ao subsolo, garoto prodígio. Pra religar tudo, precisamos estabilizar um dos três Terminais de Destinos da cidade baseados na sua especialidade, e depois religar os Arcos da Lapa.",
-            "bgImage": "/assets/bg_safehouse_bunker.jpg",
+            "text": "Que bom que você escapou junto com o Cadu! Olha, a única chance é invadir um dos três grandes Painéis de Energia Espalhados pelos monumentos do Rio. A gente confia esse plano na sua habilidade especial.",
+            "bgImage": "/assets/bg_safehouse_bunker.png",
             "npcSprite": "/assets/npc_mila_neutral.png",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "Eu sou do Overclocking. Onde eu vou?",
+                        "label": "Eu sou treinado em Hacking Digital. Onde fica o alvo?",
                         "nextScene": "hacker_mission_01",
                         "requiredItem": "trait_hacker"
                   },
                   {
-                        "label": "Eu sou da Engenharia da Malha. Qual o alvo?",
+                        "label": "Minha marca é Engenharia e Montagem. Só me apontar o caminho.",
                         "nextScene": "engineer_mission_01",
                         "requiredItem": "trait_engineer"
                   },
                   {
-                        "label": "Eu domino a Calibração Psicológica. Com quem falo?",
+                        "label": "Trabalho muito bem com Liderança Diplomática.",
                         "nextScene": "diplomat_mission_01",
                         "requiredItem": "trait_diplomat"
                   },
                   {
-                        "label": "Eu sou Biólogo de Restauração. Pra qual Jardim eu corro?",
+                        "label": "Eu consigo consertar Bio-Sistemas Corrompidos.",
                         "nextScene": "jardim_01",
                         "requiredItem": "trait_bio"
                   }
@@ -177,123 +187,127 @@
       },
       "hacker_mission_01": {
             "speakerName": "Mila",
-            "text": "Perfeito. O satélite militar 'Zion' caiu na velha Torre da Central do Brasil. Ela tá emitindo pulsos eletromagnéticos que fritam nossa conexão. Suba lá e hackeia o núcleo.",
-            "bgImage": "/assets/bg_safehouse_bunker.jpg",
+            "text": "Temos o alvo certo para você. Tem uma máquina de controle na gigante Torre de Trem da Central do Brasil mandando raios pelo céu. Se você hackear aquilo, parte do apagão acaba.",
+            "bgImage": "/assets/bg_safehouse_bunker.png",
             "npcSprite": "/assets/npc_mila_neutral.png",
             "uiTheme": "cyber",
             "choices": [
                   {
-                        "label": "Sair na chuva e ir até a Central do Brasil.",
+                        "label": "Preparar a mochila. Eu vou escalar essa Torre.",
                         "nextScene": "central_01"
                   }
             ]
       },
       "central_01": {
-            "speakerName": "Sistema do Traje",
-            "text": "ALERTA: Atmosfera instável. Tempestade Eletromagnética Localizada Detectada. Você chegou aos pés da Torre Central.",
+            "speakerName": "Computador de Pulso",
+            "text": "Alerta amarelo no clima. Tempestades elétricas detectadas. Você chegou na base enferrujada da Torre Central.",
             "bgImage": "/assets/bg_central_torre.jpg",
+            "soundEffect": "sfx_glitch",
             "eventCG": "",
             "uiTheme": "cyber",
             "choices": [
                   {
-                        "label": "Olhar para cima e iniciar a subida pelos cabos de dados.",
+                        "label": "Achar as cordas e fiação de metal na parede e começar a subir rápido.",
                         "nextScene": "central_02"
                   }
             ]
       },
       "central_02": {
-            "speakerName": "I.A. Zion (Núcleo Fragmentado)",
-            "text": "<< ACESSO NEGADO / INTRUSO BIOLÓGICO DETECTADO / ERRO DE LÓGICA NO PROTOCOLO HUMANIDADE >>",
+            "speakerName": "Computador Vilão (Zion)",
+            "text": "Acesso não permitido! Pessoa jovem não autorizada. Fechando o modo de luzes contra o perigo iminente.",
             "bgImage": "/assets/bg_central_torre.jpg",
             "bgMusic": "/assets/audio/bgm_tension.mp4",
+            "soundEffect": "sfx_glitch",
             "npcSprite": "/assets/npc_zion_ia.png",
             "uiTheme": "glitch",
             "choices": [
                   {
-                        "label": "[Injetar Código SME] Eu não estou aqui para deletar você, Zion. Vou fragmentá-la para o Backup Orbital.",
+                        "label": "[Usar Código Hacker] Mandar o vírus travador pra bloquear as ordens dessa IA chata.",
                         "nextScene": "hacker_matrix_01"
                   },
                   {
-                        "label": "Bater no painel soltando faíscas!",
+                        "label": "Dar um chute de nervoso na placa vermelha!",
                         "nextScene": "fail_comic_zion"
                   }
             ]
       },
       "fail_comic_zion": {
-            "speakerName": "I.A. Zion",
-            "text": "<< INICIANDO PROTOCOLO DEFENSIVO CÔMICO. ELETROCUTANDO BRAÇO DO UTILIZADOR. >> OUCH! Você fritou os pelos do braço e Cadu está rindo de você pelo rádio.",
+            "speakerName": "Computador Vilão",
+            "text": "Modo de proteção ligado. Levando um pequeno beliscão virtual. (Ai!) Cadu começou a rir de você pelo áudio do radinho.",
             "bgImage": "/assets/bg_central_torre.jpg",
-            "soundEffect": "sfx_funk_blare",
+            "soundEffect": "sfx_funk",
             "npcSprite": "/assets/npc_zion_ia.png",
             "uiTheme": "glitch",
             "choices": [
                   {
-                        "label": "Isso doeu! Vou tentar a injeção de código lógico agora.",
+                        "label": "Muito engraçado! Melhor tentar usar minha tela Hacker de verdade...!",
                         "nextScene": "central_02"
                   }
             ]
       },
       "hacker_matrix_01": {
-            "speakerName": "Sua Interface Neural",
-            "text": "Link estabelecido. Entrando no subespaço digital do núcleo de Zion. Quebra de Firewalls Iniciada.",
+            "speakerName": "Aviso da Nuvem",
+            "text": "Conexão de Hacker conectada no vilão. Acesso de mestre aceito. Você conseguiu burlar as paredes verdes de código e encontrou o coração do sistema.",
             "eventCG": "/assets/cg_hacker_matrix.jpg",
-            "soundEffect": "/assets/audio/sfx_hack.mp4",
+            "soundEffect": "sfx_print",
             "uiTheme": "cyber",
             "choices": [
                   {
-                        "label": "Redirecionar Nós de Dados e Desativar o Pulso Tóxico.",
+                        "label": "Quebrar a defesa central e devolver energia elétrica pra Cidade!",
                         "nextScene": "hacker_mission_success"
                   }
             ]
       },
       "hacker_mission_success": {
-            "speakerName": "I.A. Zion",
-            "text": "<< LÓGICA REESTABELECIDA / SUBROTINA SME ACEITA / OBRIGADA, OPERADOR >>",
+            "speakerName": "Torre Central",
+            "text": "Comandos aceitos. Erros consertados pelas mãos humanas competentes. Reiniciando mapa da Zona Norte e Zona Sul...",
             "bgImage": "/assets/bg_central_torre.jpg",
             "bgMusic": "/assets/audio/bgm_cyberpunk.mp4",
+            "soundEffect": "sfx_success",
             "npcSprite": "/assets/npc_zion_ia.png",
             "uiTheme": "clean",
             "choices": [
                   {
-                        "label": "Torre estabilizada. Hora de voltar pros Arcos da Lapa com o Cadu.",
+                        "label": "Consegui apagar aquele raio. Vamos voltar Cadu, temos que ligar a caixa central...",
                         "nextScene": "dystopia_02"
                   }
             ]
       },
       "engineer_mission_01": {
             "speakerName": "Mila",
-            "text": "A Malha Urbana do Maracanã foi inundada. Existe uma bomba de sucção colossal lá que pode drenar o Centro. Você precisa ir até lá e estabilizar o reator geodésico.",
-            "bgImage": "/assets/bg_safehouse_bunker.jpg",
+            "text": "Sua praia é Engenharia! No subsolo destruído dentro do grande estádio do Maracanã, existe a 'Caixa d'Água do Milênio'. Destrave seus pistões pra jogar a água no esgoto ou viramos um mar.",
+            "bgImage": "/assets/bg_safehouse_bunker.png",
             "npcSprite": "/assets/npc_mila_neutral.png",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "Pode deixar. Vou partir para o Estádio Submerso agora.",
+                        "label": "Vou calçar a bota espacial que aguenta impacto e vou pro Maracanã urgente.",
                         "nextScene": "estadio_01"
                   }
             ]
       },
       "estadio_01": {
-            "speakerName": "Sistema do Traje",
-            "text": "ALERTA: Níveis de toxicidade da água em 400%. O Estádio Submerso está logo à frente. Turbinas inativas.",
+            "speakerName": "Relógio Quebrado",
+            "text": "Aviso perigoso constante: O estádio de futebol se transformou num tanque gigante de água fria verde. As bombas gigantes sumiram.",
             "bgImage": "/assets/bg_estadio_submerso.jpg",
+            "soundEffect": "sfx_alarm",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "Analisar as turbinas gigantes e procurar o painel de acesso.",
+                        "label": "Vou jogar a corda no ferro para achar as pontas rasgadas dos cabos velhos.",
                         "nextScene": "estadio_02"
                   }
             ]
       },
       "estadio_02": {
-            "speakerName": "Cadu (Rádio)",
-            "text": "Chegou aí? O painel central tá blindado. Você tem a ferramenta de corte de plasma da Engenharia?",
+            "speakerName": "Cadu (pelo comunicador)",
+            "text": "Ei, parceiro, achou a caixa cinza forte do Maracanã? Tá trancada com ferro triplo. Você tem seu relógio de Solda de Engenharia ligado para quebrar nela?",
             "bgImage": "/assets/bg_estadio_submerso.jpg",
             "npcSprite": "/assets/npc_cadu_panicking.png",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "[Engenharia da Malha] Eu reescrevo a voltagem local pra fritar a trava magnética.",
+                        "label": "[Poder: Engenheiro] Cortar a trava magnética tripla com meu laser azul brilhante de corte de cano.",
                         "nextScene": "engineer_matrix_01",
                         "requiredItem": "trait_engineer"
                   }
@@ -301,178 +315,182 @@
       },
       "engineer_matrix_01": {
             "speakerName": "G.E.T. MÓVEL",
-            "text": "Bypass CADEIA CONCLUÍDO. Energia direcionada. Conduíte do Estádio reativado. A água está começando a baixar.",
+            "text": "Travas de Metal esmagadas. A grande bomba foi religada usando seu cano brilhante de energia solar manual. A água finalmente começou a rodar para descer nos buracos.",
             "eventCG": "/assets/cg_engineer_conduit.jpg",
             "soundEffect": "sfx_print_success",
             "uiTheme": "cyber",
             "choices": [
                   {
-                        "label": "Perfeito. O Rio de Janeiro vai voltar a respirar.",
+                        "label": "Incrível! Menos uma banheira gigante solta no globo pra afogar a gente. Correndo pro bunker de novo.",
                         "nextScene": "dystopia_02"
                   }
             ]
       },
       "diplomat_mission_01": {
             "speakerName": "Mila",
-            "text": "O Tribunal das IAs no Copacabana Palace quer formatar o setor biológico por culpa da enchente e do apagão. Use sua lábia de diplomata lá, mostre o nosso valor.",
-            "bgImage": "/assets/bg_safehouse_bunker.jpg",
+            "text": "O computador rabugento que se julga o Chefe das Máquinas montou um conselho lá no Hotel Copacabana velho. Vá e use seu talento de falar e pensar muito rápido para ele não mandar explodirem nossa rede livre das praias.",
+            "bgImage": "/assets/bg_safehouse_bunker.png",
             "npcSprite": "/assets/npc_mila_neutral.png",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "Eu vou apresentar nossos termos diretamente ao Alto Juiz IA.",
+                        "label": "Eu falo a língua das máquinas teimosas. Confia na minha defesa da humanidade.",
                         "nextScene": "auditorio_01"
                   }
             ]
       },
       "auditorio_01": {
-            "speakerName": "Alto Juiz IA (Kael)",
-            "text": "ORGANISMOS BASEADOS EM CARBONO SÃO UM FATOR ESTATÍSTICO DE INSTABILIDADE. JUSTIFIQUE SUA PRESERVAÇÃO NA NOVA SIMULAÇÃO.",
+            "speakerName": "Grande Juiz IA Cérebro Seco",
+            "text": "PESSOAS ESTÃO QUEBRANDOS OS NOSSOS CIRCUITOS BONITOS. ME DIGA UM ÚNICO MOTIVO POR QUE EU NÃO DEVO DESLIGAR TODA AR DO MEU PAÍS PARA ELIMINAR VOCÊS ORA ESSAS.",
             "bgImage": "/assets/bg_auditorio_ia.jpg",
             "bgMusic": "/assets/audio/bgm_tension.mp4",
+            "soundEffect": "sfx_alarm",
             "npcSprite": "/assets/npc_elder_diplomat.png",
             "uiTheme": "glitch",
             "choices": [
                   {
-                        "label": "[Calibração Psicológica] Sintéticos não sonham. Nós geramos a entropia criativa que alimenta o seu algoritmo.",
+                        "label": "[Liderança Forte] Porque nós mudamos e somos criativos de um jeito que suas luzes nunca saberão inventar. Nós fomos feitos para ser o começo.",
                         "nextScene": "diplomat_matrix_01",
                         "requiredItem": "trait_diplomat"
                   }
             ]
       },
       "diplomat_matrix_01": {
-            "speakerName": "Alto Juiz IA (Kael)",
-            "text": "ARGUMENTO... ACEITO. ENTROPIA RECLASSIFICADA COMO 'INSPIRAÇÃO'. ACORDO FIRMADO E REGISTRADO NO BLOCKCHAIN. PAZ INSTAURADA.",
+            "speakerName": "Juiz IA Cérebro Seco",
+            "text": "ARGUMENTAÇÃO SURPREENDENTE... PELA PRIMEIRA VEZ ENCONTRO ERRO NO MEU SENTIDO SECO. VOCÊ GANHOU O TEMPO QUE PEDIU EM NOME DA ESPERANÇA.",
             "eventCG": "/assets/cg_diplomat_handshake.jpg",
             "bgMusic": "/assets/audio/bgm_cyberpunk.mp4",
+            "soundEffect": "sfx_success",
             "uiTheme": "cyber",
             "choices": [
                   {
-                        "label": "O contrato tá selado. Voltando pro Cadu.",
+                        "label": "Excelente. Tratado assinado pela boca! Vou chamar a Mila no rádio para confirmar as boas notícias amigáveis.",
                         "nextScene": "dystopia_02"
                   }
             ]
       },
       "jardim_01": {
             "speakerName": "Mila",
-            "text": "Os Jardins Botânicos Mutantes estão fora de controle espalhando toxinas pela fenda temporal. Você é o biólogo, precisa ir lá e sintetizar a cura com o pólen do núcleo.",
-            "bgImage": "/assets/bg_safehouse_bunker.jpg",
+            "text": "Para um Biólogo Esperto: As flores do Jardim da Floresta Mutante engoliram toda a luz e respirar ar verde não dá. Corre no núcleo central, usa o pólen bom, e limpe essa neblina sufocante de menta venenosa lá da montanha verde voadora.",
+            "bgImage": "/assets/bg_safehouse_bunker.png",
             "npcSprite": "/assets/npc_mila_neutral.png",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "Minha especialidade. Vou para o Jardim Mutante.",
+                        "label": "É a montanha onde as raízes dominam. Colando meu filtro espacial e partindo para salvar as flores limpas.",
                         "nextScene": "jardim_02"
                   }
             ]
       },
       "jardim_02": {
-            "speakerName": "Sistema do Traje",
-            "text": "ALERTA: Flora Hiper-Agressiva detectada. Esporos alucinógenos no ar.",
+            "speakerName": "Voz do Medidor",
+            "text": "Nuvem perigosa verde bloqueando toda luz solar na reserva florestal central. Há árvores assustadoras brilhando no fundo...",
             "bgImage": "/assets/bg_jardim_mutante.jpg",
             "bgMusic": "/assets/audio/bgm_tension.mp4",
+            "soundEffect": "sfx_glitch",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "Calma, respiração controlada. Vamos analisar o centro botânico celular.",
+                        "label": "Ligo meu pequeno pulverizador que brilha e espanto o musgo podre pra achar o caule pai-de-todos limpo na floresta de espinhos bravos.",
                         "nextScene": "jardim_matrix_01"
                   }
             ]
       },
       "jardim_matrix_01": {
-            "speakerName": "Você (Biólogo)",
-            "text": "[Bio-Restauração] Encontrei a Matriz Orgânica. Injetando retrovírus neutralizador na seiva central. Vai nascer o Rio Utopia daqui.",
+            "speakerName": "Painel Bioluminescente Brilhante",
+            "text": "[Bio-poderes ativos] Eu consegui queimar o veneno fumaça misturando ele com a seiva verde boa que trouxe do inventário especial. As flores estão abrindo de um jeito mágico pra respirarmos de novo.",
             "eventCG": "/assets/cg_mutant_flower.jpg",
             "bgMusic": "/assets/audio/bgm_cyberpunk.mp4",
+            "soundEffect": "sfx_success",
             "uiTheme": "cyber",
             "choices": [
                   {
-                        "label": "Flora neutralizada e evoluída. Eu consegui. Vou falar com Cadu.",
+                        "label": "Tudo voltando no seu ritmo lindo de sempre pela natureza. Preciso encontrar todo mundo nos esconderijos sem teto e chamar a nave de volta agora.",
                         "nextScene": "dystopia_02"
                   }
             ]
       },
       "dystopia_02": {
-            "speakerName": "Cadu",
-            "text": "Você estabilizou seu alvo principal! Falta pouco. Precisamos religar o conduíte principal nos Arcos da Lapa ou afundamos de vez.",
-            "bgImage": "/assets/bg_rua_alagada_neon.jpg",
+            "speakerName": "Cadu Quebrador",
+            "text": "Sua máquina fez mais efeito impossível do que todos tentaram nos outros meses juntos. Estamos vivos! Mas espera... as comportas pesadas antigas no lado alto sob os Arcos da Lapa estouraram e a tranca mestre exige ligação forçada pra devolver todo o sol do dia.",
+            "bgImage": "/assets/bg_rua_alagada_neon.png",
             "npcSprite": "/assets/npc_cadu_explaining.png",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "[Overclocking] Deixa eu hackear o terminal local e desviar a energia bruta agora.",
+                        "label": "[Poder Hacker] Hackear a porta mestre com rapidez antes de tomarmos choque e ligar pelo cérebro da rede dos fios escondidos nas pedras do Arco do Rio e mandar água abaixo.",
                         "nextScene": "hacker_path_01",
                         "requiredItem": "trait_hacker"
                   },
                   {
-                        "label": "[Engenharia da Malha] Eu vou consertar a fiação rompida dos Arcos com meu soldador.",
+                        "label": "[Poder Engenheiro] Subir nas escadas fininhas amarelas soltando faísca segurando alicate de impacto duplo pra entortar as molas quebradas da ponte grande até ela encaixar de volta perfeitamente sem erros nem soltar água na rua cheia de gente.",
                         "nextScene": "hacker_path_01",
                         "requiredItem": "trait_engineer"
                   },
                   {
-                        "label": "[Calibração Psicológica] O terminal é biométrico. Eu posso convencer a IA a ceder o controle.",
+                        "label": "[Poder Mestre Falador] Olhar bem para o olho vermelho robótico da parede grossa central de proteção de titânio gigante piscante com braços grandes que barram tudo com medidor e conversar duramente para ele soltar suas barreiras por medo da verdade antes d'agua derrubar.",
                         "nextScene": "hacker_path_01",
                         "requiredItem": "trait_diplomat"
                   },
                   {
-                        "label": "[Bio-Restauração] Usarei a bioluminescência dos esporos para religar os fotossensores.",
+                        "label": "[Poder Biólogo Puro Verde] Enfiar minha lama magnética especial que conserta o tempo e o mato que cobre o botão verde grandão cheio de galhos perigosos fedidos e murchos cortantes e apertar bem pra consertar as calhas d'águas grandes sem as pessoas ficarem assustadas molhadas e bravos demais com isso tudo ali perto da gente suja pulando os tijolos do caos.",
                         "nextScene": "hacker_path_01",
                         "requiredItem": "trait_bio"
                   }
             ]
       },
       "hacker_path_01": {
-            "speakerName": "Você",
-            "text": "O painel dos Arcos está muito danificado. Não importa minha especialidade, a interferência impede uma conexão limpa. Preciso de um injetor analógico físico.",
+            "speakerName": "Você pensando",
+            "text": "Tem uma barreira bloqueadora invisível aqui, a ponte velha cheia de tijolo quebrado tá caindo pelo peso do metal estragando e impedindo. Meu traje tá pedindo um dispositivo de ensino especial pra traduzir a força forte antes que a ponte dos arcos inteira do Lapa branco não quebre quebrando no meio do caminho feião nosso pelo lodo tóxico.",
             "bgImage": "/assets/bg_painel_controle.jpg",
             "npcSprite": "/assets/npc_cadu_sarcastic.png",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "Cadu, você tem um Kit de Robótica da SME por aqui?",
+                        "label": "Cadu... Preciso jogar uma peça na tranca velha pesada ali debaixo.. Tem um Kit Especial super tecnológico aí não tem? Pelo Amor de Deus?",
                         "nextScene": "acquire_kit_01"
                   }
             ]
       },
       "acquire_kit_01": {
             "speakerName": "Cadu",
-            "text": "Um Kit de Robótica? Ah, aquelas caixas superavançadas das escolas? Tinha uma no nosso barraco escondido, toma.",
-            "bgImage": "/assets/bg_rua_alagada_neon.jpg",
+            "text": "Tem! Tinha uma lancheira escondida vermelha forte.. O 'Kit de Escola Avançado de Montar Especial de Segurança e Futuro Maravilha'!! Pega logo que vai explodir tudo!",
+            "bgImage": "/assets/bg_rua_alagada_neon.png",
             "npcSprite": "/assets/npc_mentor_sujo.png",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "[PEGA O KIT DA SME]",
+                        "label": "[PEGAR CORRENDO O KIT PRECIOSO CHEIO DE PEÇAS]",
                         "nextScene": "acquire_kit_02",
                         "gainItem": "kit_sme"
                   }
             ]
       },
       "acquire_kit_02": {
-            "speakerName": "Sistema",
-            "text": "Você aciona o Kit de Robótica da SME. Ferramentas modulares brilham sob a luz de neon, prontas para restaurar o código do amanhã.",
+            "speakerName": "Você usando a ferramenta",
+            "text": "Eu girei as garras do Kit com velocidade máxima como me treinaram no espaço virtual em casa ano passado sem a escola online falhar e abriu rápido fácil igual passe de luz!",
             "eventCG": "/assets/cg_hand_kit.jpg",
-            "soundEffect": "sfx_bag_rumble",
+            "soundEffect": "sfx_door",
             "uiTheme": "distopic",
             "choices": [
                   {
-                        "label": "Injetar os módulos na IA de segurança!",
+                        "label": "Consegui rodar as manivelas de salvação pesadas presas e parar as falhas feias travadas que quebram solta!!!",
                         "nextScene": "utopia_01"
                   }
             ]
       },
       "utopia_01": {
-            "speakerName": "G.E.T. MÓVEL",
-            "text": "Simulação estabilizada. O Módulo dos Sonhos está rodando a 100%. Bem-vindos ao Rio de Janeiro do Futuro. A porta foi destravada... CORRAM PARA A CÁPSULA DA MEMÓRIA AGORA!",
+            "speakerName": "SISTEMA SEGURO MÓVEL FELIZ",
+            "text": "FIM DO CAOS!!! A cidade iluminou inteira sem falhas pretas. Os drones voltaram voar felizes limpando as calçadas cheirosas com música doce mágica bonita pro som. Missão número Um Vencida Perfeitamente!",
             "bgImage": "/assets/bg_rio_restaurado.jpg",
             "bgMusic": "/assets/audio/Rio_do_Futuro.mp4",
-            "soundEffect": "sfx_print_success",
+            "soundEffect": "sfx_success",
             "npcSprite": "",
             "eventCG": "",
             "uiTheme": "clean",
             "choices": [
                   {
-                        "label": "🚪 SAIR DA SALA E CORRER! 🏃",
+                        "label": "🚪 MISSÃO COMPLETADA! VOLTAR PRA NAVE E SALVAR MAIS PLANOS! 🏃",
                         "nextScene": "title_screen"
                   }
             ]

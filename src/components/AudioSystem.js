@@ -190,8 +190,8 @@ export const AmbientAudioEngine = {
                   src: [url],
                   loop: true,
                   volume: 0.4,
-                  html5: true, // Force HTML5 Audio to avoid loading large files in entirely in memory
-                  preload: 'metadata'
+                  html5: false, // Force Web Audio API for perfect seamless looping
+                  preload: true
             });
             this.bgm.play();
       }
